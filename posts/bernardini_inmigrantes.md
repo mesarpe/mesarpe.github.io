@@ -11,7 +11,7 @@ Utilizando los datos del buscador de *CEMLA* (Centro de Estudios Migratorios Lat
 Los datos son bastante interesantes.
 Aparentemente hubo un pico de llegada de Bernardini's en la decada del 20.
 
-![alt text](http://mesarpe.github.io/posts/img/bernardini_inmigrantes/cemla.png)
+![alt text](https://raw.githubusercontent.com/mesarpe/mesarpe.github.io/master/img/bernardini_inmigrantes/cemla.png)
 
 Lo que no se puede verificar con estos datos es si iban y volvían, y no hay informacion sobre gente que hubiese hecho escalas en Montevideo, o desembarcado en otros puertos (tales como el puerto de Santa Fe).
 
