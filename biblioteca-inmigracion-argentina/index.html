@@ -1,0 +1,35 @@
+<!doctype html>
+</body>
+</html>
+<html>
+	<head>
+		<title>Bibliografia Inmigracion Argentina</title>
+		<link rel="stylesheet" href="bib-publication-list.css"/>
+	</head>
+	<body>
+    <noscript>
+      <!-- bibtex source hidden by default, show it if JS disabled -->
+      <style>
+      #bibtex { display: block;}
+      </style>
+    </noscript>
+		<table id="pubTable" class="display"></table>
+        <pre id="bibtex" style="display:none;">
+</pre>
+  	<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+		<script type="text/javascript" src="build/bib-list.js"></script>
+		<script type="text/javascript">
+		    $(document).ready(function() {
+			var reference_file = "references.bib"
+			if(location.hash == "#novels")
+			{
+				reference_file = "novels.bib"
+			}
+        	bibtexify(reference_file, "pubTable");
+    		});
+		</script>
+	</body>
+	<p><a href="javascript:location.hash='#'; location.reload();">Listar fuentes (libros de historias y papers cientificos)</a> | 
+	<a href="javascript:location.hash='#novels'; location.reload();">Listar fuentes (novelas)</a></p>
+	<p>Build using <a href="https://github.com/vkaravir/bib-publication-list">https://github.com/vkaravir/bib-publication-list</a></p>
+</html>
