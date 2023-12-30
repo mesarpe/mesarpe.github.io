@@ -4,8 +4,6 @@ title: Basic Plugin for Python Usage in VIM
 author: cbernardini
 ---
 
-# Basic Plugin for Python usage in VIM
-
 1. Install vim using your OS package manager.
 
 2. Install Vundle.vim. We will clone the repository into ~/.vim/bundle/Vundle.vim
