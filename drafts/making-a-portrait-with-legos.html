@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <meta name="generator" content="Pelican" />
+        <title>Making a Portrait with Legos</title>
+        <link rel="stylesheet" href="https://mesarpe.github.io/theme/css/main.css" />
+        <link href="https://mesarpe.github.io/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="cbernardini' blog Atom Feed" />
+        <meta name="description" content="After building a few bricks and being successful with my first 3d print objects, I realized how slow the process was and how cool it would be to..." />
+</head>
+
+<body id="index" class="home">
+        <header id="banner" class="body">
+                <h1><a href="https://mesarpe.github.io/">cbernardini' blog</a></h1>
+                <nav><ul>
+                    <li class="active"><a href="https://mesarpe.github.io/category/misc.html">misc</a></li>
+                </ul></nav>
+        </header><!-- /#banner -->
+<section id="content" class="body">
+  <article>
+    <header>
+      <h1 class="entry-title">
+        <a href="https://mesarpe.github.io/drafts/making-a-portrait-with-legos.html" rel="bookmark"
+           title="Permalink to Making a Portrait with Legos">Making a Portrait with Legos</a></h1>
+    </header>
+
+    <div class="entry-content">
+<footer class="post-info">
+        <abbr class="published" title="2023-05-01T00:00:00+02:00">
+                Published: lun. 01 mai 2023
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="https://mesarpe.github.io/author/cbernardini.html">cbernardini</a>
+        </address>
+<p>In <a href="https://mesarpe.github.io/category/misc.html">misc</a>.</p>
+<p>tags: <a href="https://mesarpe.github.io/tag/art.html">art</a> </p>
+</footer><!-- /.post-info -->      <p>After building a few bricks and being successful with my first 3d print objects, I realized how slow the process was and how cool it would be to be able to create a piece of art based on those bricks. A chain of thoughts led me to the idea that would be nice to use LEGO bricks to create a picture. LEGO bricks are normally squared, easy to stack, remove and could be useful to fill up a canvas.</p>
+<p>So, I decided to take a real image, pixelize it and see if I could create a portrait out of it.</p>
+<h2>From image to pixels</h2>
+<p>The first idea was to pixelize an image. It was not an straightforward process and in the way I learned that LEGOs are made only with a handful of colors. For instance, we cannot every color in the palette so basically, we need to map some of the colors to a subset.</p>
+<p>The other challenge was to pixelize the image. Images are composed of pixels, almost any picture we take with our phones is around ~ 4000 x 3000 pixeles. If we do the math, it will be the equivalent of having 12000000 pixels. If we translate this to LEGOs, using a price of 4 cents per piece. It would be the equivalent of using 12 millions bricks of 1x1 which stands for 480000 euros. What about the size? Consider that a piece of 1x1 has a surface of 8mm x 8mm (width, height) approxivamately. this is equivalent to having 96km to represent the image (48000000 x 0.008). It looks like having a surface of 96km x 96km is a little bit big. Let shrink the image.</p>
+<p>The next idea was then to combine several pixels to create a small tile of 64x64, 48x48 or 32x32. In this case, the algorithm is as follows:</p>
+<ol>
+<li>
+<p>We create a grid in the image with the number of divisions chosen, for example 64x64.</p>
+</li>
+<li>
+<p>Assume we select one of the squares of the grid assigning it a location based on its position (first square in the top left corner will be 0,0 and his right neighbor will be 1,0. Given all the pixels per square of the grid, we calculate the mean and we only insert that color in the named position per square of the grid. [VERY BADLY EXPLAINED].</p>
+</li>
+<li>
+<p>Now, it is time to create a new image with the resized image.</p>
+</li>
+</ol>
+<p>[ ORIGINAL ] =&gt; [ PIXELIZED]</p>
+<p>The algorithms can be found in https://github.com/mesarpe/pixelizer</p>
+<h2>From a pixelized image to a LEGO portrait</h2>
+<p>[WRITE]</p>
+    </div><!-- /.entry-content -->
+
+  </article>
+</section>
+        <section id="extras" class="body">
+                <div class="blogroll">
+                        <h2>links</h2>
+                        <ul>
+                            <li><a href="https://getpelican.com/">Pelican</a></li>
+                            <li><a href="https://www.python.org/">Python.org</a></li>
+                            <li><a href="https://palletsprojects.com/p/jinja/">Jinja2</a></li>
+                            <li><a href="#">You can modify those links in your config file</a></li>
+                        </ul>
+                </div><!-- /.blogroll -->
+                <div class="social">
+                        <h2>social</h2>
+                        <ul>
+                            <li><a href="https://mesarpe.github.io/feeds/all.atom.xml" type="application/atom+xml" rel="alternate">atom feed</a></li>
+
+                            <li><a href="#">You can add links in your config file</a></li>
+                            <li><a href="#">Another social link</a></li>
+                        </ul>
+                </div><!-- /.social -->
+        </section><!-- /#extras -->
+
+        <footer id="contentinfo" class="body">
+                <address id="about" class="vcard body">
+                Proudly powered by <a rel="nofollow" href="https://getpelican.com/">Pelican</a>, which takes great advantage of <a rel="nofollow" href="https://www.python.org/">Python</a>.
+                </address><!-- /#about -->
+
+                <p>The theme is by <a rel="nofollow" href="https://www.smashingmagazine.com/2009/08/designing-a-html-5-layout-from-scratch/">Smashing Magazine</a>, thanks!</p>
+        </footer><!-- /#contentinfo -->
+
+</body>
+</html>

@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <meta name="generator" content="Pelican" />
+        <title>Basic Plugin for Python Usage in VIM</title>
+        <link rel="stylesheet" href="https://mesarpe.github.io/theme/css/main.css" />
+        <link href="https://mesarpe.github.io/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="cbernardini' blog Atom Feed" />
+        <meta name="description" content="Install vim using your OS package manager. Plugin Manager: Vundle Install Vundle.vim. We will clone the repository into ~/.vim/bundle/Vundle.vim..." />
+</head>
+
+<body id="index" class="home">
+        <header id="banner" class="body">
+                <h1><a href="https://mesarpe.github.io/">cbernardini' blog</a></h1>
+                <nav><ul>
+                    <li class="active"><a href="https://mesarpe.github.io/category/misc.html">misc</a></li>
+                </ul></nav>
+        </header><!-- /#banner -->
+<section id="content" class="body">
+  <article>
+    <header>
+      <h1 class="entry-title">
+        <a href="https://mesarpe.github.io/basic-plugin-for-python-usage-in-vim.html" rel="bookmark"
+           title="Permalink to Basic Plugin for Python Usage in VIM">Basic Plugin for Python Usage in VIM</a></h1>
+    </header>
+
+    <div class="entry-content">
+<footer class="post-info">
+        <abbr class="published" title="2023-12-30T00:00:00+01:00">
+                Published: sam. 30 décembre 2023
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="https://mesarpe.github.io/author/cbernardini.html">cbernardini</a>
+        </address>
+<p>In <a href="https://mesarpe.github.io/category/misc.html">misc</a>.</p>
+
+</footer><!-- /.post-info -->      <ol>
+<li>Install vim using your OS package manager.</li>
+</ol>
+<h2>Plugin Manager: Vundle</h2>
+<ol>
+<li>
+<p>Install Vundle.vim. We will clone the repository into ~/.vim/bundle/Vundle.vim</p>
+</li>
+<li>
+<p>edit the file <code>.vimrc</code> and set the following content:</p>
+</li>
+</ol>
+<div class="highlight"><pre><span></span><code><span class="nx">set</span><span class="w"> </span><span class="nx">nocompatible</span><span class="w">              </span><span class="s">&quot; be iMproved, required</span>
+<span class="s">filetype off                  &quot;</span><span class="w"> </span><span class="nx">required</span>
+
+<span class="s">&quot; set the runtime path to include Vundle and initialize</span>
+<span class="s">set rtp+=~/.vim/bundle/Vundle.vim</span>
+<span class="s">call vundle#begin()</span>
+
+<span class="s">&quot;</span><span class="w"> </span><span class="kd">let</span><span class="w"> </span><span class="nx">Vundle</span><span class="w"> </span><span class="nx">manage</span><span class="w"> </span><span class="nx">Vundle</span><span class="p">,</span><span class="w"> </span><span class="nx">required</span>
+<span class="nx">Plugin</span><span class="w"> </span><span class="err">&#39;</span><span class="nx">VundleVim</span><span class="o">/</span><span class="nx">Vundle</span><span class="p">.</span><span class="nx">vim</span><span class="err">&#39;</span>
+
+<span class="nx">call</span><span class="w"> </span><span class="nx">vundle</span><span class="err">#</span><span class="nx">end</span><span class="p">()</span><span class="w">            </span><span class="s">&quot; required</span>
+<span class="s">filetype plugin indent on    &quot;</span><span class="w"> </span><span class="nx">required</span>
+</code></pre></div>
+
+<ol>
+<li>Close vim and open it again. Type the command :PluginInstall. Check that nothing fails</li>
+</ol>
+<h2>Vim Jedi</h2>
+<ol>
+<li>Open again the <code>.vimrc</code> file and add the new plugin:</li>
+</ol>
+<div class="highlight"><pre><span></span><code>&quot; After Plugin &#39;VundleVim/Vundle.vim&#39;
+Plugin &#39;davidhalter/jedi-vim&#39;
+</code></pre></div>
+
+<p>Save, close, open again and execute the vim command <code>:PluginInstall</code></p>
+<h2>A few helpers if you feel lazy to open the doc</h2>
+<ul>
+<li>Control+Espace: list the help of a function</li>
+<li>\ + d to jump to the definition of a function</li>
+<li>:Pyimport Os: go to the definition of the module.</li>
+</ul>
+    </div><!-- /.entry-content -->
+
+  </article>
+</section>
+        <section id="extras" class="body">
+                <div class="blogroll">
+                        <h2>links</h2>
+                        <ul>
+                            <li><a href="https://getpelican.com/">Pelican</a></li>
+                            <li><a href="https://www.python.org/">Python.org</a></li>
+                            <li><a href="https://palletsprojects.com/p/jinja/">Jinja2</a></li>
+                            <li><a href="#">You can modify those links in your config file</a></li>
+                        </ul>
+                </div><!-- /.blogroll -->
+                <div class="social">
+                        <h2>social</h2>
+                        <ul>
+                            <li><a href="https://mesarpe.github.io/feeds/all.atom.xml" type="application/atom+xml" rel="alternate">atom feed</a></li>
+
+                            <li><a href="#">You can add links in your config file</a></li>
+                            <li><a href="#">Another social link</a></li>
+                        </ul>
+                </div><!-- /.social -->
+        </section><!-- /#extras -->
+
+        <footer id="contentinfo" class="body">
+                <address id="about" class="vcard body">
+                Proudly powered by <a rel="nofollow" href="https://getpelican.com/">Pelican</a>, which takes great advantage of <a rel="nofollow" href="https://www.python.org/">Python</a>.
+                </address><!-- /#about -->
+
+                <p>The theme is by <a rel="nofollow" href="https://www.smashingmagazine.com/2009/08/designing-a-html-5-layout-from-scratch/">Smashing Magazine</a>, thanks!</p>
+        </footer><!-- /#contentinfo -->
+
+</body>
+</html>

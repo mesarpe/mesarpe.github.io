@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom"><title>cbernardini' blog - misc</title><link href="https://mesarpe.github.io/" rel="alternate"></link><link href="https://mesarpe.github.io/feeds/misc.atom.xml" rel="self"></link><id>https://mesarpe.github.io/</id><updated>2024-08-01T00:00:00+02:00</updated><entry><title>Creating my own LEGOs</title><link href="https://mesarpe.github.io/creating-my-own-legos.html" rel="alternate"></link><published>2024-08-01T00:00:00+02:00</published><updated>2024-08-01T00:00:00+02:00</updated><author><name>cbernardini</name></author><id>tag:mesarpe.github.io,2024-08-01:/creating-my-own-legos.html</id><summary type="html">&lt;p&gt;Have you ever wonder if it is possible to refresh the feeling of playing with LEGOs once you are near your forties? Indeed, it is possible but after ten years of engineering the idea was not only to play with them, but to create my own. This is the story …&lt;/p&gt;</summary><content type="html">&lt;p&gt;Have you ever wonder if it is possible to refresh the feeling of playing with LEGOs once you are near your forties? Indeed, it is possible but after ten years of engineering the idea was not only to play with them, but to create my own. This is the story of me creating my owns bricks while learning 3D printing and getting to know the MakerSpace56 at Vannes.&lt;/p&gt;
+&lt;p&gt;&lt;img alt="My own bricks" src="https://mesarpe.github.io/bricks.jpg"&gt;&lt;/p&gt;
+&lt;p&gt;Let us start by setting up my intent:&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;
+&lt;p&gt;Let us create programatically my own bricks in such a way that they are stackable.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;My programmatic bricks shall be composable, which is the same to say that I expect to create a 2x1 piece using a 1x1 piece.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;I really love houses in the french Brittany, they are part of the cozy feeling of living in Bretagne. So, it would be nice to create a small set of parts capable of creating the smallest possible house.&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;&lt;img alt="The resulting house" src="https://mesarpe.github.io/bricks_house_model2.jpg"&gt;&lt;/p&gt;
+&lt;h2&gt;Pieces&lt;/h2&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;Piece&lt;/th&gt;
+&lt;th&gt;Url to Code or STL&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;1x1 brick&lt;/td&gt;
+&lt;td&gt;&lt;a href="url"&gt;SOURCE&lt;/a&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;XxY brick&lt;/td&gt;
+&lt;td&gt;&lt;a href="url"&gt;SOURCE&lt;/a&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;Windows and doors&lt;/td&gt;
+&lt;td&gt;&lt;a href="url"&gt;SOURCE&lt;/a&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;Tiles&lt;/td&gt;
+&lt;td&gt;&lt;a href="url"&gt;SOURCE&lt;/a&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;Joist&lt;/td&gt;
+&lt;td&gt;&lt;a href="url"&gt;SOURCE&lt;/a&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;h3&gt;Creating a small house&lt;/h3&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;Pictures&lt;/th&gt;
+&lt;th&gt;&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;img alt="Model #2" src="https://mesarpe.github.io/bricks_house_model2.jpg"&gt;&lt;/td&gt;
+&lt;td&gt;&lt;img alt="Model #2" src="https://mesarpe.github.io/bricks_house_model2b.jpg"&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;img alt="Model #1" src="https://mesarpe.github.io/bricks_house_model1.jpg"&gt;&lt;/td&gt;
+&lt;td&gt;&lt;img alt="Joist" src="https://mesarpe.github.io/bricks_joist.jpg"&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;h3&gt;Lessons learned&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;It is really important to choose the right profile for printing. Using default UltiMake Cura 5.6 Standard profile, the tiles are problematic to connect to the joists. I had to destroy the pieces and glue them together. For the rest of the pieces, I uses the dynamic profile (which has a better quality) and the results were better.&lt;/li&gt;
+&lt;li&gt;Some of the pieces were printed with a LONGER LK 1 and Creality Ender Pro 3 v3 SE.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3&gt;Software-Simulator&lt;/h3&gt;
+&lt;h2&gt;Brick v2&lt;/h2&gt;
+&lt;h2&gt;Brick v3&lt;/h2&gt;</content><category term="misc"></category><category term="3dprint"></category></entry><entry><title>Basic Plugin for Python Usage in VIM</title><link href="https://mesarpe.github.io/basic-plugin-for-python-usage-in-vim.html" rel="alternate"></link><published>2023-12-30T00:00:00+01:00</published><updated>2023-12-30T00:00:00+01:00</updated><author><name>cbernardini</name></author><id>tag:mesarpe.github.io,2023-12-30:/basic-plugin-for-python-usage-in-vim.html</id><summary type="html">&lt;ol&gt;
+&lt;li&gt;Install vim using your OS package manager.&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h2&gt;Plugin Manager: Vundle&lt;/h2&gt;
+&lt;ol&gt;
+&lt;li&gt;
+&lt;p&gt;Install Vundle.vim. We will clone the repository into ~/.vim/bundle/Vundle.vim&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;edit the file &lt;code&gt;.vimrc&lt;/code&gt; and set the following content:&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="nx"&gt;set&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nx"&gt;nocompatible&lt;/span&gt;&lt;span class="w"&gt;              &lt;/span&gt;&lt;span class="s"&gt;&amp;quot; be iMproved, required&lt;/span&gt;
+&lt;span class="s"&gt;filetype off                  &amp;quot;&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nx"&gt;required&lt;/span&gt;
+
+&lt;span class="s"&gt;&amp;quot; set the runtime path to include Vundle and initialize&lt;/span&gt;
+&lt;span class="s"&gt;set …&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;</summary><content type="html">&lt;ol&gt;
+&lt;li&gt;Install vim using your OS package manager.&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h2&gt;Plugin Manager: Vundle&lt;/h2&gt;
+&lt;ol&gt;
+&lt;li&gt;
+&lt;p&gt;Install Vundle.vim. We will clone the repository into ~/.vim/bundle/Vundle.vim&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;edit the file &lt;code&gt;.vimrc&lt;/code&gt; and set the following content:&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="nx"&gt;set&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nx"&gt;nocompatible&lt;/span&gt;&lt;span class="w"&gt;              &lt;/span&gt;&lt;span class="s"&gt;&amp;quot; be iMproved, required&lt;/span&gt;
+&lt;span class="s"&gt;filetype off                  &amp;quot;&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nx"&gt;required&lt;/span&gt;
+
+&lt;span class="s"&gt;&amp;quot; set the runtime path to include Vundle and initialize&lt;/span&gt;
+&lt;span class="s"&gt;set rtp+=~/.vim/bundle/Vundle.vim&lt;/span&gt;
+&lt;span class="s"&gt;call vundle#begin()&lt;/span&gt;
+
+&lt;span class="s"&gt;&amp;quot;&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="kd"&gt;let&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nx"&gt;Vundle&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nx"&gt;manage&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nx"&gt;Vundle&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nx"&gt;required&lt;/span&gt;
+&lt;span class="nx"&gt;Plugin&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="err"&gt;&amp;#39;&lt;/span&gt;&lt;span class="nx"&gt;VundleVim&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="nx"&gt;Vundle&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;vim&lt;/span&gt;&lt;span class="err"&gt;&amp;#39;&lt;/span&gt;
+
+&lt;span class="nx"&gt;call&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nx"&gt;vundle&lt;/span&gt;&lt;span class="err"&gt;#&lt;/span&gt;&lt;span class="nx"&gt;end&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;&lt;span class="w"&gt;            &lt;/span&gt;&lt;span class="s"&gt;&amp;quot; required&lt;/span&gt;
+&lt;span class="s"&gt;filetype plugin indent on    &amp;quot;&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nx"&gt;required&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;ol&gt;
+&lt;li&gt;Close vim and open it again. Type the command :PluginInstall. Check that nothing fails&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h2&gt;Vim Jedi&lt;/h2&gt;
+&lt;ol&gt;
+&lt;li&gt;Open again the &lt;code&gt;.vimrc&lt;/code&gt; file and add the new plugin:&lt;/li&gt;
+&lt;/ol&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&amp;quot; After Plugin &amp;#39;VundleVim/Vundle.vim&amp;#39;
+Plugin &amp;#39;davidhalter/jedi-vim&amp;#39;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;Save, close, open again and execute the vim command &lt;code&gt;:PluginInstall&lt;/code&gt;&lt;/p&gt;
+&lt;h2&gt;A few helpers if you feel lazy to open the doc&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;Control+Espace: list the help of a function&lt;/li&gt;
+&lt;li&gt;\ + d to jump to the definition of a function&lt;/li&gt;
+&lt;li&gt;:Pyimport Os: go to the definition of the module.&lt;/li&gt;
+&lt;/ul&gt;</content><category term="misc"></category></entry><entry><title>¿Cuántos Bernardini's llegaron via Barcos?</title><link href="https://mesarpe.github.io/cuantos-bernardinis-llegaron-via-barcos.html" rel="alternate"></link><published>2018-03-01T00:00:00+01:00</published><updated>2018-03-01T00:00:00+01:00</updated><author><name>cbernardini</name></author><id>tag:mesarpe.github.io,2018-03-01:/cuantos-bernardinis-llegaron-via-barcos.html</id><summary type="html">&lt;p&gt;Utilizando los datos del buscador de &lt;em&gt;CEMLA&lt;/em&gt; (Centro de Estudios Migratorios Latinoamericanos)[0], se me ocurrió verificar cuantos Bernardini se bajaron de barcos en el puerto de Buenos Aires.
+Los datos son bastante interesantes.
+Aparentemente hubo un pico de llegada de Bernardini's en la decada del 20.&lt;/p&gt;
+&lt;p&gt;&lt;img alt="alt text" src="https://raw.githubusercontent.com/mesarpe/mesarpe.github.io/master/img/bernardini_inmigrantes/cemla.png"&gt;&lt;/p&gt;
+&lt;p&gt;Lo que no …&lt;/p&gt;</summary><content type="html">&lt;p&gt;Utilizando los datos del buscador de &lt;em&gt;CEMLA&lt;/em&gt; (Centro de Estudios Migratorios Latinoamericanos)[0], se me ocurrió verificar cuantos Bernardini se bajaron de barcos en el puerto de Buenos Aires.
+Los datos son bastante interesantes.
+Aparentemente hubo un pico de llegada de Bernardini's en la decada del 20.&lt;/p&gt;
+&lt;p&gt;&lt;img alt="alt text" src="https://raw.githubusercontent.com/mesarpe/mesarpe.github.io/master/img/bernardini_inmigrantes/cemla.png"&gt;&lt;/p&gt;
+&lt;p&gt;Lo que no se puede verificar con estos datos es si iban y volvían, y no hay informacion sobre gente que hubiese hecho escalas en Montevideo, o desembarcado en otros puertos (tales como el puerto de Santa Fe).&lt;/p&gt;
+&lt;p&gt;Fuentes:
+1. https://cemla.com/buscador/&lt;/p&gt;</content><category term="misc"></category><category term="inmigration"></category></entry></feed>

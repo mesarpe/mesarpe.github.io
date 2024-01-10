@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <meta name="generator" content="Pelican" />
+        <title>Home Assistant</title>
+        <link rel="stylesheet" href="https://mesarpe.github.io/theme/css/main.css" />
+        <link href="https://mesarpe.github.io/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="cbernardini' blog Atom Feed" />
+        <meta name="description" content="This is a tool to automatize your home. It is composed of a main python tool Home Assistant Core. We will install only this one. Manual..." />
+</head>
+
+<body id="index" class="home">
+        <header id="banner" class="body">
+                <h1><a href="https://mesarpe.github.io/">cbernardini' blog</a></h1>
+                <nav><ul>
+                    <li class="active"><a href="https://mesarpe.github.io/category/misc.html">misc</a></li>
+                </ul></nav>
+        </header><!-- /#banner -->
+<section id="content" class="body">
+  <article>
+    <header>
+      <h1 class="entry-title">
+        <a href="https://mesarpe.github.io/home-assistant.html" rel="bookmark"
+           title="Permalink to Home Assistant">Home Assistant</a></h1>
+    </header>
+
+    <div class="entry-content">
+<footer class="post-info">
+        <abbr class="published" title="2023-12-30T00:00:00+01:00">
+                Published: sam. 30 décembre 2023
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="https://mesarpe.github.io/author/cbernardini.html">cbernardini</a>
+        </address>
+<p>In <a href="https://mesarpe.github.io/category/misc.html">misc</a>.</p>
+<p>tags: <a href="https://mesarpe.github.io/tag/electronics.html">electronics</a> </p>
+</footer><!-- /.post-info -->      <p>This is a tool to automatize your home.</p>
+<p>It is composed of a main python tool Home Assistant Core. We will install only this one.</p>
+<h2>Manual Installation of Home Assistant Core</h2>
+<p>dependencies:</p>
+<div class="highlight"><pre><span></span><code>sudo apt-get install -y python3 python3-dev python3-venv python3-pip \
+    bluez libffi-dev libssl-dev libjpeg-dev zlib1g-dev autoconf \
+    build-essential libopenjp2-7 libtiff6 libturbojpeg0-dev tzdata \
+    ffmpeg liblapack3 liblapack-dev libatlas-base-dev
+</code></pre></div>
+
+<p>Add a user and it folder:</p>
+<div class="highlight"><pre><span></span><code>sudo useradd -rm homeassistant
+sudo mkdir /srv/homeassistant
+sudo chown homeassistant:homeassistant /srv/homeassistant
+</code></pre></div>
+
+<p>Create the python environment (remember that ubuntu 22 comes with pyhton3.10/3.8. I manually installed the python3.11 from multiverse repository):</p>
+<div class="highlight"><pre><span></span><code>sudo -u homeassistant -H -s
+cd /srv/homeassistant
+python3.11 -m venv .
+source bin/activate
+</code></pre></div>
+
+<div class="highlight"><pre><span></span><code>python3 -m pip install wheel
+# we cannot use the version coming with Ubuntu is too old
+pip3 install homeassistant==2023.11.1 
+</code></pre></div>
+
+<p>Launch the new server:</p>
+<div class="highlight"><pre><span></span><code>hass
+</code></pre></div>
+
+<h2>Create my OWN sensor</h2>
+<p>This is an example of a sensor that I found in the documentation of Home Assistant. It was pretty painful to follow,
+because the documentation in general seem to be outdated.</p>
+<p>https://github.com/home-assistant/example-custom-config/blob/master/custom_components/example_sensor/README.md</p>
+<p>the idea is that the SensorEntity has a method update that every time that is called retrieve the temperature
+of the sensor.</p>
+<p>The only fact of having this sensor enable us to see it in the main dashboard and will report the temperature.</p>
+<h3>open questions</h3>
+<ul>
+<li>After restart, does the information is removed? No, it does not look like. It was proven by changing manually the temperature.</li>
+<li>I do not have a unique ID for the entity.
+    this point was kind of easy to solve, basically we simply set a new property unique_id and we return a string.
+    I guess for the device tracker it will be enough to just retrieve the value set as the ID of the device via a GATT attribute.</li>
+<li>How can I create rooms? Settings add zone.
+    I have already created a few. It was not difficult.</li>
+<li>Put it in a repo in some manner.</li>
+<li>Can I add a Device? and the device can have entities? this is not very clear.</li>
+</ul>
+    </div><!-- /.entry-content -->
+
+  </article>
+</section>
+        <section id="extras" class="body">
+                <div class="blogroll">
+                        <h2>links</h2>
+                        <ul>
+                            <li><a href="https://getpelican.com/">Pelican</a></li>
+                            <li><a href="https://www.python.org/">Python.org</a></li>
+                            <li><a href="https://palletsprojects.com/p/jinja/">Jinja2</a></li>
+                            <li><a href="#">You can modify those links in your config file</a></li>
+                        </ul>
+                </div><!-- /.blogroll -->
+                <div class="social">
+                        <h2>social</h2>
+                        <ul>
+                            <li><a href="https://mesarpe.github.io/feeds/all.atom.xml" type="application/atom+xml" rel="alternate">atom feed</a></li>
+
+                            <li><a href="#">You can add links in your config file</a></li>
+                            <li><a href="#">Another social link</a></li>
+                        </ul>
+                </div><!-- /.social -->
+        </section><!-- /#extras -->
+
+        <footer id="contentinfo" class="body">
+                <address id="about" class="vcard body">
+                Proudly powered by <a rel="nofollow" href="https://getpelican.com/">Pelican</a>, which takes great advantage of <a rel="nofollow" href="https://www.python.org/">Python</a>.
+                </address><!-- /#about -->
+
+                <p>The theme is by <a rel="nofollow" href="https://www.smashingmagazine.com/2009/08/designing-a-html-5-layout-from-scratch/">Smashing Magazine</a>, thanks!</p>
+        </footer><!-- /#contentinfo -->
+
+</body>
+</html>
