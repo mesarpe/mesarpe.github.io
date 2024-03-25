@@ -1,6 +1,261 @@
 <?xml version="1.0" encoding="utf-8"?>
-<feed xmlns="http://www.w3.org/2005/Atom"><title>cbernardini' blog - misc</title><link href="https://mesarpe.github.io/" rel="alternate"></link><link href="https://mesarpe.github.io/feeds/misc.atom.xml" rel="self"></link><id>https://mesarpe.github.io/</id><updated>2024-08-01T00:00:00+02:00</updated><entry><title>Creating my own LEGOs</title><link href="https://mesarpe.github.io/creating-my-own-legos.html" rel="alternate"></link><published>2024-08-01T00:00:00+02:00</published><updated>2024-08-01T00:00:00+02:00</updated><author><name>cbernardini</name></author><id>tag:mesarpe.github.io,2024-08-01:/creating-my-own-legos.html</id><summary type="html">&lt;p&gt;Have you ever wonder if it is possible to refresh the feeling of playing with LEGOs once you are near your forties? Indeed, it is possible but after ten years of engineering the idea was not only to play with them, but to create my own. This is the story …&lt;/p&gt;</summary><content type="html">&lt;p&gt;Have you ever wonder if it is possible to refresh the feeling of playing with LEGOs once you are near your forties? Indeed, it is possible but after ten years of engineering the idea was not only to play with them, but to create my own. This is the story of me creating my owns bricks while learning 3D printing and getting to know the MakerSpace56 at Vannes.&lt;/p&gt;
-&lt;p&gt;&lt;img alt="My own bricks" src="https://mesarpe.github.io/bricks.jpg"&gt;&lt;/p&gt;
+<feed xmlns="http://www.w3.org/2005/Atom"><title>cbernardini' blog - misc</title><link href="https://mesarpe.github.io/" rel="alternate"></link><link href="https://mesarpe.github.io/feeds/misc.atom.xml" rel="self"></link><id>https://mesarpe.github.io/</id><updated>2024-03-25T00:00:00+01:00</updated><entry><title>Octoprint: a webservice to manage the printer.</title><link href="https://mesarpe.github.io/octoprint-a-webservice-to-manage-the-printer.html" rel="alternate"></link><published>2024-03-25T00:00:00+01:00</published><updated>2024-03-25T00:00:00+01:00</updated><author><name>cbernardini</name></author><id>tag:mesarpe.github.io,2024-03-25:/octoprint-a-webservice-to-manage-the-printer.html</id><summary type="html">&lt;p&gt;Octoprint is a tool to remotely manage your 3d printer. Just avoid going to the run copying your 3d prints into the SD card and all the stuff, simply open a web interface and manage remotely the 3d printer.&lt;/p&gt;
+&lt;h1&gt;My installation&lt;/h1&gt;
+&lt;p&gt;I will be running the application from a virtual …&lt;/p&gt;</summary><content type="html">&lt;p&gt;Octoprint is a tool to remotely manage your 3d printer. Just avoid going to the run copying your 3d prints into the SD card and all the stuff, simply open a web interface and manage remotely the 3d printer.&lt;/p&gt;
+&lt;h1&gt;My installation&lt;/h1&gt;
+&lt;p&gt;I will be running the application from a virtual environment with its own user.&lt;/p&gt;
+&lt;p&gt;Let us start by creating the new user:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;sudo useradd -rm octoprint
+# add the user octoprint to be able to open the serial port
+sudo usermod -a -G dialout octoprint
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;Now, the installation of octoprint in the pi&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;sudo mkdir /srv/octoprint
+sudo chown octoprint:octoprint /srv/octoprint
+sudo -u octoprint -H -s
+python3.11 -m venv .
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;We are almost there, let us activate and install the python packages:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;source bin/activate
+# version: 1.9.3
+pip install octoprint
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;We can start playing with it by simply calling&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;#&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nv"&gt;just&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="k"&gt;for&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nv"&gt;execution&lt;/span&gt;
+&lt;span class="nv"&gt;octoprint&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nv"&gt;serve&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;Now, it is time to follow the wizard:&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;Next&lt;/li&gt;
+&lt;li&gt;Restore backup? No&lt;/li&gt;
+&lt;li&gt;Access Control&lt;/li&gt;
+&lt;/ol&gt;
+&lt;blockquote&gt;
+&lt;p&gt;I notice that when I send a print it worked, but when I sent a stop it did not.&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h1&gt;Activating octoprint as a service from startup&lt;/h1&gt;
+&lt;p&gt;In order to have octoprint running from start&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;sudo nano /etc/systemd/system/octoprint.service
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;The content of the file is the following:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="k"&gt;[Unit]&lt;/span&gt;
+&lt;span class="na"&gt;Description&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s"&gt;Octoprint&lt;/span&gt;
+&lt;span class="na"&gt;After&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s"&gt;homeassistant.service&lt;/span&gt;
+
+&lt;span class="k"&gt;[Service]&lt;/span&gt;
+&lt;span class="na"&gt;Type&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s"&gt;simple&lt;/span&gt;
+&lt;span class="na"&gt;User&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s"&gt;octoprint&lt;/span&gt;
+&lt;span class="na"&gt;WorkingDirectory&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s"&gt;/srv/octoprint&lt;/span&gt;
+&lt;span class="na"&gt;ExecStart&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s"&gt;/srv/octoprint/bin/octoprint serve&lt;/span&gt;
+&lt;span class="na"&gt;RestartForceExitStatus&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s"&gt;100&lt;/span&gt;
+&lt;span class="na"&gt;Restart&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s"&gt;on-failure&lt;/span&gt;
+&lt;span class="na"&gt;RestartSec&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s"&gt;5s&lt;/span&gt;
+
+&lt;span class="k"&gt;[Install]&lt;/span&gt;
+&lt;span class="na"&gt;WantedBy&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s"&gt;multi-user.target&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;Now, simply execute the following commands:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;sudo systemctl restart octoprint.service
+systemctl status octoprint.service
+sudo systemctl enable octoprint.service
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;h1&gt;Home-Assistant integration&lt;/h1&gt;
+&lt;p&gt;Now, it is time to open Home Assistant and configure the integration of Octoprint. To that end:&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;Open the web interface for home assistant&lt;/li&gt;
+&lt;li&gt;Go to settings / Services&lt;/li&gt;
+&lt;li&gt;Search for octoprint and provide its url.&lt;/li&gt;
+&lt;li&gt;Open octoprint and enable the integration that appears as a popup in the web interface.&lt;/li&gt;
+&lt;li&gt;You are ready to go.&lt;/li&gt;
+&lt;/ol&gt;
+&lt;blockquote&gt;
+&lt;p&gt;We are probably missing updating the firmware of the printer but i am not ready for this.&lt;/p&gt;
+&lt;/blockquote&gt;</content><category term="misc"></category><category term="3dprint"></category></entry><entry><title>Raspberry Pi Server</title><link href="https://mesarpe.github.io/raspberry-pi-server.html" rel="alternate"></link><published>2024-03-25T00:00:00+01:00</published><updated>2024-03-25T00:00:00+01:00</updated><author><name>cbernardini</name></author><id>tag:mesarpe.github.io,2024-03-25:/raspberry-pi-server.html</id><summary type="html">&lt;p&gt;In our days, having a server at home is almost a must. Very useful to keep our backups, giving access to particular applications or controlling a domotics server. All this is possible with a raspberry pi. In addition, the power consumption is very low being around ~10 euros per year …&lt;/p&gt;</summary><content type="html">&lt;p&gt;In our days, having a server at home is almost a must. Very useful to keep our backups, giving access to particular applications or controlling a domotics server. All this is possible with a raspberry pi. In addition, the power consumption is very low being around ~10 euros per year.&lt;/p&gt;
+&lt;h2&gt;Requirements&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;Raspberry Pi 4 B&lt;/li&gt;
+&lt;li&gt;SD card (32GB)&lt;/li&gt;
+&lt;li&gt;Ubuntu PC (you can still do it in Windows or Mac, but the instructions given are for Ubuntu 22.04 LTS)&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2&gt;Install Ubuntu Server&lt;/h2&gt;
+&lt;ol&gt;
+&lt;li&gt;Create the SD Card image:&lt;/li&gt;
+&lt;/ol&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;sudo snap install rpi-imager
+rpi-imager
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;ol&gt;
+&lt;li&gt;
+&lt;p&gt;In the rpi-imager, select the options according to your raspberry pi.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Device: Raspberry Pi 4&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;Operating System: General Purpose Os / Ubuntu / Ubuntu 22.04 LTS&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Storage: SDCard&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;When you click on start, there are interesting options about customization like setting the keyboard layout, username and password, enabling ssh. In my case, I set all of them.&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;After waiting for the image to be written, you can remove rpi-imager&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;sudo snap remove rpi-imager
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;If you have done everything right and rpi-manager did its job, your Ubuntu machine is ready to boot.&lt;/p&gt;
+&lt;h2&gt;Services intended to run on the Raspberry Pi&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href="https://mesarpe.github.io/home-assistant.html"&gt;Home Assistant&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://mesarpe.github.io/octoprint-a-webservice-to-manage-the-printer.html"&gt;Octoprint&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;</content><category term="misc"></category></entry><entry><title>Testbed: Serving an Image</title><link href="https://mesarpe.github.io/testbed-serving-an-image.html" rel="alternate"></link><published>2024-02-15T00:00:00+01:00</published><updated>2024-02-15T00:00:00+01:00</updated><author><name>cbernardini</name></author><id>tag:mesarpe.github.io,2024-02-15:/testbed-serving-an-image.html</id><summary type="html">&lt;p&gt;The idea is to create a testbed that is generically enough to use with students. The first idea is to serve the images using a DHCP and TFTP&lt;/p&gt;
+&lt;h2&gt;Elements&lt;/h2&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th style="text-align: center;"&gt;Quantity&lt;/th&gt;
+&lt;th style="text-align: center;"&gt;Element&lt;/th&gt;
+&lt;th style="text-align: center;"&gt;Description, notes&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td style="text-align: center;"&gt;1&lt;/td&gt;
+&lt;td style="text-align: center;"&gt;Raspberry PI 4B&lt;/td&gt;
+&lt;td style="text-align: center;"&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style="text-align: center;"&gt;1&lt;/td&gt;
+&lt;td style="text-align: center;"&gt;Serial Cable to USB (PL2303TA)&lt;/td&gt;
+&lt;td style="text-align: center;"&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style="text-align: center;"&gt;1&lt;/td&gt;
+&lt;td style="text-align: center;"&gt;USB to Ethernet (UE-300)&lt;/td&gt;
+&lt;td style="text-align: center;"&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;h2&gt;1) Serial …&lt;/h2&gt;</summary><content type="html">&lt;p&gt;The idea is to create a testbed that is generically enough to use with students. The first idea is to serve the images using a DHCP and TFTP&lt;/p&gt;
+&lt;h2&gt;Elements&lt;/h2&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th style="text-align: center;"&gt;Quantity&lt;/th&gt;
+&lt;th style="text-align: center;"&gt;Element&lt;/th&gt;
+&lt;th style="text-align: center;"&gt;Description, notes&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td style="text-align: center;"&gt;1&lt;/td&gt;
+&lt;td style="text-align: center;"&gt;Raspberry PI 4B&lt;/td&gt;
+&lt;td style="text-align: center;"&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style="text-align: center;"&gt;1&lt;/td&gt;
+&lt;td style="text-align: center;"&gt;Serial Cable to USB (PL2303TA)&lt;/td&gt;
+&lt;td style="text-align: center;"&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style="text-align: center;"&gt;1&lt;/td&gt;
+&lt;td style="text-align: center;"&gt;USB to Ethernet (UE-300)&lt;/td&gt;
+&lt;td style="text-align: center;"&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;h2&gt;1) Serial Access&lt;/h2&gt;
+&lt;p&gt;Connection is as follows:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;TX GPIO 14 =&amp;gt; white cable
+RX GPIO 15 =&amp;gt; green cable
+Ground =&amp;gt; black cable
+No connection =&amp;gt; 5v
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;There should be a PC connected to the serial to visualize what is going on with the board.&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="o"&gt;$&lt;/span&gt;&lt;span class="n"&gt;python&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;m&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;pip&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;install&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;pyserial&lt;/span&gt;
+&lt;span class="o"&gt;$&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="c1"&gt;# list the ports&lt;/span&gt;
+&lt;span class="o"&gt;$&lt;/span&gt;&lt;span class="n"&gt;python&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;m&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;serial&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;tools&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;list_ports&lt;/span&gt;
+&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;dev&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;ttyUSB0&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;&amp;lt;-&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;Normally&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;this&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="k"&gt;is&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;the&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;port&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;being&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;used&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;when&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;connecting&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;the&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;cable&lt;/span&gt;
+&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;dev&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;ttyS4&lt;/span&gt;
+&lt;span class="o"&gt;$&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="c1"&gt;# in normal mode our user has no access to the ports&lt;/span&gt;
+&lt;span class="o"&gt;$&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;sudo&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;usermod&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;a&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;G&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;dialout&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;LINUXUSER&lt;/span&gt;
+&lt;span class="o"&gt;$&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="c1"&gt;# reboot&lt;/span&gt;
+&lt;span class="o"&gt;$&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;reboot&lt;/span&gt;
+&lt;span class="o"&gt;$&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;python&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;m&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;serial&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;tools&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;miniterm&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;dev&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;ttyUSB0&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="mi"&gt;115200&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;blockquote&gt;
+&lt;p&gt;It is important to see that we can read but also write in the serial. Otherwise we won't be able to interact with U-Boot&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h2&gt;2) Install the DHCP server&lt;/h2&gt;
+&lt;p&gt;It is important now to connect the UE300 to the RPi4 using the Ethernet port of the RPi4 to a usb port of the PC. This interface will be configured with static ip addresses to use &lt;code&gt;192.168.3.254&lt;/code&gt;.&lt;/p&gt;
+&lt;p&gt;Once the address is fixed, we can start thinking in serving IP addresses from this host using a DHCP server.&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;sudo apt install isc-dhcp-server
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;Set the configuration for the DHCP server:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="k"&gt;default&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="nx"&gt;lease&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="nx"&gt;time&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="mi"&gt;600&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+&lt;span class="nx"&gt;max&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="nx"&gt;lease&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="nx"&gt;time&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="mi"&gt;700&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+
+&lt;span class="nx"&gt;log&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="nx"&gt;facility&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nx"&gt;local7&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+
+&lt;span class="nx"&gt;subnet&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="m m-Double"&gt;192.168.3.0&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nx"&gt;netmask&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="m m-Double"&gt;255.255.255.0&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="p"&gt;{&lt;/span&gt;
+&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="nx"&gt;range&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="m m-Double"&gt;192.168.3.150&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="m m-Double"&gt;192.168.3.200&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="nx"&gt;option&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nx"&gt;routers&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="m m-Double"&gt;192.168.3.154&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+
+&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="nx"&gt;host&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nx"&gt;MY_HOST&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="p"&gt;{&lt;/span&gt;
+&lt;span class="w"&gt;        &lt;/span&gt;&lt;span class="nx"&gt;hardware&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nx"&gt;ethernet&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nx"&gt;AA&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="nx"&gt;BB&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="nx"&gt;CC&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="nx"&gt;DD&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="nx"&gt;EE&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="nx"&gt;FF&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="err"&gt;#&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nx"&gt;this&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="k"&gt;is&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nx"&gt;the&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nx"&gt;ethernet&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nx"&gt;address&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nx"&gt;of&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nx"&gt;the&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nx"&gt;device&lt;/span&gt;
+&lt;span class="w"&gt;        &lt;/span&gt;&lt;span class="nx"&gt;fixed&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="nx"&gt;address&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="m m-Double"&gt;192.168.3.153&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+&lt;span class="w"&gt;        &lt;/span&gt;&lt;span class="nx"&gt;filename&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s"&gt;&amp;quot;MY_IMAGE&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="err"&gt;#&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nx"&gt;this&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="k"&gt;is&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nx"&gt;the&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nx"&gt;filename&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nx"&gt;that&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nx"&gt;this&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nx"&gt;host&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nx"&gt;will&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nx"&gt;try&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nx"&gt;to&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nx"&gt;retrieve&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nx"&gt;from&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nx"&gt;the&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nx"&gt;TFTP&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nx"&gt;server&lt;/span&gt;
+&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="p"&gt;}&lt;/span&gt;
+&lt;span class="p"&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;Edit the interfaces that will use the DHCP server (/etc/default/isc-dhcp-server):&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;INTERFACESv4=&amp;quot;MYUE300INTERFACE&amp;quot;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;sudo systemctl restart isc-dhcp-server.service
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;To write the logs into a file, edit the file &lt;code&gt;/etc/rsyslog.d/50-default.conf&lt;/code&gt;:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="n"&gt;local7&lt;/span&gt;&lt;span class="o"&gt;.*&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="k"&gt;var&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="nb"&gt;log&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;dhcpd&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;log&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;After do not forget to restart&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;To see the logs, we can use &lt;code&gt;journalctl -u isc-dhcp-server&lt;/code&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h2&gt;3) Install the TFTP server&lt;/h2&gt;
+&lt;p&gt;Create a folder &lt;code&gt;tftpserver&lt;/code&gt; in some location of your like, let us say /home/cbernardini/tftpfiles.&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="n"&gt;sudo&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;python&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;m&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;pip&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;install&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;tftpy&lt;/span&gt;
+&lt;span class="n"&gt;sudo&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;~/&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="k"&gt;local&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;bin&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;tftpy_server&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;py&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;i&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;[&lt;/span&gt;&lt;span class="n"&gt;SERVER_IP&lt;/span&gt;&lt;span class="o"&gt;]&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;p&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="mi"&gt;69&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;r&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;home&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;cbernardini&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;tftpfiles&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;blockquote&gt;
+&lt;p&gt;we can easily add verbosity and logs flags to see what is going on at the standard output (see connections, download of files, etc etc).&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h2&gt;4) Changing U-Boot to boot from the TFTP server&lt;/h2&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="n"&gt;setenv&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;autoload&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="k"&gt;no&lt;/span&gt;
+&lt;span class="n"&gt;dhcp&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="err"&gt;#&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="k"&gt;after&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;see&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;that&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;the&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;dhcp&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;lease&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;worked&lt;/span&gt;
+&lt;span class="n"&gt;setenv&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;serverip&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;[&lt;/span&gt;&lt;span class="n"&gt;SERVER_Ip&lt;/span&gt;&lt;span class="o"&gt;]&lt;/span&gt;
+&lt;span class="n"&gt;tftpboot&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="mh"&gt;0x10000000&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;MYIMAGE&lt;/span&gt;
+&lt;span class="n"&gt;bootm&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="mh"&gt;0x10000000&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;blockquote&gt;
+&lt;p&gt;In the step tftpboot, we can see that the image is being downloaded (cross verify with the TFTP server that there are some logs) and then the image is simply used to boot.&lt;/p&gt;
+&lt;/blockquote&gt;</content><category term="misc"></category><category term="testbed"></category></entry><entry><title>Creating my own LEGOs</title><link href="https://mesarpe.github.io/creating-my-own-legos.html" rel="alternate"></link><published>2024-01-08T00:00:00+01:00</published><updated>2024-01-08T00:00:00+01:00</updated><author><name>cbernardini</name></author><id>tag:mesarpe.github.io,2024-01-08:/creating-my-own-legos.html</id><summary type="html">&lt;p&gt;Have you ever wonder if it is possible to refresh the feeling of playing with LEGOs once you are near your forties? Indeed, it is possible but after ten years of engineering the idea was not only to play with them, but to create my own. This is the story …&lt;/p&gt;</summary><content type="html">&lt;p&gt;Have you ever wonder if it is possible to refresh the feeling of playing with LEGOs once you are near your forties? Indeed, it is possible but after ten years of engineering the idea was not only to play with them, but to create my own. This is the story of me creating my owns bricks while learning 3D printing and getting to know the MakerSpace56 at Vannes.&lt;/p&gt;
+&lt;p&gt;&lt;img alt="My own bricks" src="https://mesarpe.github.io/images/bricks.jpg"&gt;&lt;/p&gt;
 &lt;p&gt;Let us start by setting up my intent:&lt;/p&gt;
 &lt;ol&gt;
 &lt;li&gt;
@@ -13,7 +268,7 @@
 &lt;p&gt;I really love houses in the french Brittany, they are part of the cozy feeling of living in Bretagne. So, it would be nice to create a small set of parts capable of creating the smallest possible house.&lt;/p&gt;
 &lt;/li&gt;
 &lt;/ol&gt;
-&lt;p&gt;&lt;img alt="The resulting house" src="https://mesarpe.github.io/bricks_house_model2.jpg"&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img alt="The resulting house" src="https://mesarpe.github.io/images/bricks_house_model2.jpg"&gt;&lt;/p&gt;
 &lt;h2&gt;Pieces&lt;/h2&gt;
 &lt;table&gt;
 &lt;thead&gt;
@@ -25,23 +280,23 @@
 &lt;tbody&gt;
 &lt;tr&gt;
 &lt;td&gt;1x1 brick&lt;/td&gt;
-&lt;td&gt;&lt;a href="url"&gt;SOURCE&lt;/a&gt;&lt;/td&gt;
+&lt;td&gt;&lt;a href="https://mesarpe.github.io/brick.scad"&gt;SOURCE&lt;/a&gt;&lt;/td&gt;
 &lt;/tr&gt;
 &lt;tr&gt;
-&lt;td&gt;XxY brick&lt;/td&gt;
-&lt;td&gt;&lt;a href="url"&gt;SOURCE&lt;/a&gt;&lt;/td&gt;
+&lt;td&gt;2x1 brick&lt;/td&gt;
+&lt;td&gt;&lt;a href="https://mesarpe.github.io/brick2x1.scad"&gt;SOURCE&lt;/a&gt;&lt;/td&gt;
 &lt;/tr&gt;
 &lt;tr&gt;
 &lt;td&gt;Windows and doors&lt;/td&gt;
-&lt;td&gt;&lt;a href="url"&gt;SOURCE&lt;/a&gt;&lt;/td&gt;
+&lt;td&gt;&lt;a href="https://mesarpe.github.io/window.scad"&gt;SOURCE&lt;/a&gt;&lt;/td&gt;
 &lt;/tr&gt;
 &lt;tr&gt;
 &lt;td&gt;Tiles&lt;/td&gt;
-&lt;td&gt;&lt;a href="url"&gt;SOURCE&lt;/a&gt;&lt;/td&gt;
+&lt;td&gt;&lt;a href="https://mesarpe.github.io/tile.scad"&gt;SOURCE&lt;/a&gt;&lt;/td&gt;
 &lt;/tr&gt;
 &lt;tr&gt;
 &lt;td&gt;Joist&lt;/td&gt;
-&lt;td&gt;&lt;a href="url"&gt;SOURCE&lt;/a&gt;&lt;/td&gt;
+&lt;td&gt;&lt;a href="{static/tile.scad"&gt;SOURCE&lt;/a&gt;&lt;/td&gt;
 &lt;/tr&gt;
 &lt;/tbody&gt;
 &lt;/table&gt;
@@ -55,12 +310,12 @@
 &lt;/thead&gt;
 &lt;tbody&gt;
 &lt;tr&gt;
-&lt;td&gt;&lt;img alt="Model #2" src="https://mesarpe.github.io/bricks_house_model2.jpg"&gt;&lt;/td&gt;
-&lt;td&gt;&lt;img alt="Model #2" src="https://mesarpe.github.io/bricks_house_model2b.jpg"&gt;&lt;/td&gt;
+&lt;td&gt;&lt;img alt="Model #2" src="https://mesarpe.github.io/images/bricks_house_model2.jpg"&gt;&lt;/td&gt;
+&lt;td&gt;&lt;img alt="Model #2" src="https://mesarpe.github.io/images/bricks_house_model2b.jpg"&gt;&lt;/td&gt;
 &lt;/tr&gt;
 &lt;tr&gt;
-&lt;td&gt;&lt;img alt="Model #1" src="https://mesarpe.github.io/bricks_house_model1.jpg"&gt;&lt;/td&gt;
-&lt;td&gt;&lt;img alt="Joist" src="https://mesarpe.github.io/bricks_joist.jpg"&gt;&lt;/td&gt;
+&lt;td&gt;&lt;img alt="Model #1" src="https://mesarpe.github.io/images/bricks_house_model1.jpg"&gt;&lt;/td&gt;
+&lt;td&gt;&lt;img alt="Joist" src="https://mesarpe.github.io/images/bricks_joist.jpg"&gt;&lt;/td&gt;
 &lt;/tr&gt;
 &lt;/tbody&gt;
 &lt;/table&gt;
@@ -70,8 +325,152 @@
 &lt;li&gt;Some of the pieces were printed with a LONGER LK 1 and Creality Ender Pro 3 v3 SE.&lt;/li&gt;
 &lt;/ul&gt;
 &lt;h3&gt;Software-Simulator&lt;/h3&gt;
-&lt;h2&gt;Brick v2&lt;/h2&gt;
-&lt;h2&gt;Brick v3&lt;/h2&gt;</content><category term="misc"></category><category term="3dprint"></category></entry><entry><title>Basic Plugin for Python Usage in VIM</title><link href="https://mesarpe.github.io/basic-plugin-for-python-usage-in-vim.html" rel="alternate"></link><published>2023-12-30T00:00:00+01:00</published><updated>2023-12-30T00:00:00+01:00</updated><author><name>cbernardini</name></author><id>tag:mesarpe.github.io,2023-12-30:/basic-plugin-for-python-usage-in-vim.html</id><summary type="html">&lt;ol&gt;
+&lt;h1&gt;Improving the brick's design to cast them and improve the quality&lt;/h1&gt;
+&lt;h2&gt;Brick v2: enabling casting&lt;/h2&gt;
+&lt;p&gt;While building the first version of my brick, I was quite lucky. In the first shot, I managed to make some bricks that fit and are stackable, and in general, they worked pretty well.. However, when I moved to the casting part, the piece isn't perfect. The piece presents some defects, for example, that is really difficult to cast. Let us try to fix it.&lt;/p&gt;
+&lt;p&gt;The main issue with the version 1 of my brick was that it had an undercut. So basically this new design will expect not to have this under-cut and it simplifies the creation of the brick in two pieces mold.&lt;/p&gt;
+&lt;p&gt;Regarding the version number two, we printed two bricks. The bricks were very similar to the version one. The only difference is that we avoid having the undercut. We have done this by keeping the hollow cube. and adding a lid on top of it. that it's between the dents and the hollow cubes.. And in this way, it's simpler to make them mold. We had a few issues with the quality of printing (by printing the pieces with the dynamic profile, we are still having issues to interconnect the pieces.&lt;/p&gt;
+&lt;p&gt;[PHOTO]&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;We had an issue with the printer, we had to recaliber everything. Is due to this issue that the bricks are not correctly interconnecting?&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h2&gt;Brick v3: decoupled dents of bricks&lt;/h2&gt;
+&lt;p&gt;The idea of the version number 3 is a little bit different, we're going to try to decompose.  the brick into two pieces..  The main structure we see is composed of a plastic hollow cube and the interconnection.  of plastic..  The interconnection of plastic will do it by using wooden pins.&lt;/p&gt;
+&lt;p&gt;After printing the piece we have done a really small test. Basically we printed two hollow structures, the equivalent of two bricks, and we use a wooden pin to interconnect them. It is really solid and works really good.&lt;/p&gt;
+&lt;p&gt;[PHOTO]&lt;/p&gt;
+&lt;h2&gt;Brick v4: One piece casting and round dents&lt;/h2&gt;
+&lt;p&gt;This is a new test with round dents. It is very similar to LEGO. If I am not wrong, it could be possible to create a 3d mold to cast the LEGO pieces with one piece.&lt;/p&gt;
+&lt;p&gt;I would like to have a perfect fit for the bricks. Let us try to see the precision of the printer:&lt;/p&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;Radius&lt;/th&gt;
+&lt;th&gt;Comment&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;3.8&lt;/td&gt;
+&lt;td&gt;The bricks do not fit together. The dent pass through the hole, but they do not fit. They are loose.&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;3.9&lt;/td&gt;
+&lt;td&gt;The bricks fit together. The dent is slighly forced, but pieces still strongly together. Success&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;4.0&lt;/td&gt;
+&lt;td&gt;The bricks do not fit together easily, we have to force and still the fitting is not perfect.&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;blockquote&gt;
+&lt;p&gt;Can we cast it?&lt;/p&gt;
+&lt;/blockquote&gt;</content><category term="misc"></category><category term="3dprint"></category></entry><entry><title>A Wall Organizer for my Garage</title><link href="https://mesarpe.github.io/a-wall-organizer-for-my-garage.html" rel="alternate"></link><published>2023-12-30T00:00:00+01:00</published><updated>2023-12-30T00:00:00+01:00</updated><author><name>cbernardini</name></author><id>tag:mesarpe.github.io,2023-12-30:/a-wall-organizer-for-my-garage.html</id><summary type="html">&lt;p&gt;My Garage is quite messy. I have already built a table to work, however I didn't manage to make it beautiful. The idea of this project is to beautify the table with a wall organizer. The wall organizer would be made with honeycombs and I expect to manage to hang …&lt;/p&gt;</summary><content type="html">&lt;p&gt;My Garage is quite messy. I have already built a table to work, however I didn't manage to make it beautiful. The idea of this project is to beautify the table with a wall organizer. The wall organizer would be made with honeycombs and I expect to manage to hang some of my tools. As a golden point, I would like to &lt;/p&gt;
+&lt;p&gt;At least those that are useful most of the time:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Protection Gloves, protection glasses, masks&lt;/li&gt;
+&lt;li&gt;hammer, spatules&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;The wall looks as follows: &lt;/p&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th style="text-align: center;"&gt;Wall&lt;/th&gt;
+&lt;th style="text-align: center;"&gt;Expected look&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td style="text-align: center;"&gt;&lt;img alt="The Wall" src="wall.jpg"&gt;&lt;/td&gt;
+&lt;td style="text-align: center;"&gt;&lt;img alt="Maradona" src="marado.png"&gt; Maradona&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;p&gt;The wall is 1 meter (96cm) tall by around 1.5m (149cm). There are two electrical-wire tubes and two wood-supports. &lt;/p&gt;
+&lt;p&gt;I have been inspired by the following projects:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;https://www.printables.com/fr/model/152592-honeycomb-storage-wall/remixes&lt;/li&gt;
+&lt;li&gt;https://www.ikea.com/us/en/p/skadis-pegboard-combination-s89406365/&lt;/li&gt;
+&lt;li&gt;https://www.ikea.com/us/en/p/snickra-8-piece-storage-board-set-gray-green-40518246/&lt;/li&gt;
+&lt;li&gt;https://www.multiboard.io&lt;/li&gt;
+&lt;li&gt;Threadboard&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Potential options for design:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Pegboard and hooks&lt;/li&gt;
+&lt;li&gt;Metal plates&lt;/li&gt;
+&lt;li&gt;Plastic plates&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Problems:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;I would like to have images with a nice degree of details: at least 64 pixels (hexagons) tall; Diego requires a lot of hexagons to be visible. Basically, we have to estimate the size per hexagon and estimate the number of hexagons.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2&gt;Let's do some numbers.&lt;/h2&gt;
+&lt;p&gt;&lt;strong&gt;Grid size&lt;/strong&gt;. The space available to create a grid is about 149 centimeters of width and 96 centimeter of height as previously said.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Pin unit&lt;/strong&gt; The idea is to create a big grid in which a lot of colored pins can be inserted, in order to create a pixelized image of a really large size. The unit for every one of the pins is 1.6cm per width and 1.6 cm of height. To have an idea a pin is the equivalent of a lego piece that we insert in a hole. As the pin size is 1.5cm x 1.5cm, we can allocate 84 x 60 dents.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Pin Height&lt;/strong&gt; I have made a few tests to measure the minimum size required for a dent: 3mm. In the test I compared 2mm, 5mm and 3mm. 2mm ended up being too small and slippery. 5mm is too big although it fits perfectly fine.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Decomposing the grid&lt;/strong&gt;. In OpenSCAD, we have created a few pin pieces that allow us to represent that subpart of this grid.  Every one of these pieces is composed of a 19.4 cm of width and height.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Algorithm&lt;/strong&gt;. The structure of the grid chosen consists of a simple algorithm where every hole is numbered by its x and y coordinates (i.e. (x, y)). When both number of the pair of coordinates are even (i.e. x=2 and y=4 for example), we created a big hole (16mm) and for the rest of pixels, we use a hole of 10mm. The value of this number was chosen more of less randomly, but the 10mm holes can fit hooks available.&lt;/p&gt;
+&lt;p&gt;** Surface&lt;strong&gt;. As we said, the grid is composed of 16mm and 10mm holes. As the whole grid is a multiple of 16mm when we have a big hole, there is no surface to print. But when we have a 10mm hole, the surface for the hole is 16mm&lt;/strong&gt;2 - 10mm**2:&lt;/p&gt;
+&lt;p&gt;Surface = (1.6^2 - 10^2) x 121 = 188.76 # 121 is the number of small holes&lt;/p&gt;
+&lt;p&gt;Volume = Surface * height = 188.75 * 0.5mm = 94.38 mm^2&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;It was calculated that for a grid of 12x12, the number of big holes is given by $n^2 - (n-1)^2)$ and the rest are all small holes.&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h1&gt;Clone of pieces with polyurethane.&lt;/h1&gt;
+&lt;p&gt;After successfully printing one piece of the big board, the idea was to multiply this piece by 34 times. The process of multiplication of pieces consists in the following..  We create a mod based on silicon and then we cast 34 pieces using polyurethane. The process of casting consists of mixing two parts of polyuretane and then mixing them for one minute and putting the liquid inside of the mold.&lt;/p&gt;
+&lt;p&gt;After waiting for three hours, the piece becomes ready: The liquid solidifies and the piece becomes one solid entity.&lt;/p&gt;
+&lt;p&gt;Then, the process of unmolding starts. It is very simple, we simply remove the pieces from the cast.&lt;/p&gt;
+&lt;h1&gt;Clearance after clone.&lt;/h1&gt;
+&lt;p&gt;After cloning the pieces, we have a small problem.&lt;/p&gt;
+&lt;p&gt;It looks like the clearance that was enough for the three printed pieces..  After cloning, the hole seems to be bigger, so the clearance needs to be reduced.&lt;/p&gt;
+&lt;p&gt;To fix the problem, basically we have to re-print the pieces, changing the clearance. The experiment consisted in changing the clearance to 0 and print 3 pieces.&lt;/p&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th style="text-align: center;"&gt;Small Hole&lt;/th&gt;
+&lt;th style="text-align: center;"&gt;Clearance&lt;/th&gt;
+&lt;th style="text-align: center;"&gt;Comments&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td style="text-align: center;"&gt;10.4&lt;/td&gt;
+&lt;td style="text-align: center;"&gt;0.1&lt;/td&gt;
+&lt;td style="text-align: center;"&gt;It fits perfectly fine in the piece (candidate for cloning)&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style="text-align: center;"&gt;10.3&lt;/td&gt;
+&lt;td style="text-align: center;"&gt;0.1&lt;/td&gt;
+&lt;td style="text-align: center;"&gt;It fits the piece, but not in every hole.&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style="text-align: center;"&gt;10.2&lt;/td&gt;
+&lt;td style="text-align: center;"&gt;0.1&lt;/td&gt;
+&lt;td style="text-align: center;"&gt;the piece is very small, moves too much&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style="text-align: center;"&gt;10.1&lt;/td&gt;
+&lt;td style="text-align: center;"&gt;0.1&lt;/td&gt;
+&lt;td style="text-align: center;"&gt;the piece is very small, moves too much&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style="text-align: center;"&gt;16.4&lt;/td&gt;
+&lt;td style="text-align: center;"&gt;0.1&lt;/td&gt;
+&lt;td style="text-align: center;"&gt;????&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;blockquote&gt;
+&lt;p&gt;the question is valid again: after cloning will it fit so good?&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h2&gt;Stack print&lt;/h2&gt;
+&lt;p&gt;There is something that I was willing to investigate since a long time: Stack Printing. Stack printing consist in printing multiple pieces one over the other one. By using this concept, we can multiply the number of pieces that we print in a batch. Of course, it does not mean that the printer will take less time. In general depending on the piece, we need to print a structure to hold it in place. This structure consumes filemanet and needs time to be built.&lt;/p&gt;
+&lt;p&gt;We are going to do a simple experiment: printing 4 dents, one on top of the other. Every dent will have the same coordinates x,y and will have a different z. The z for the first one will be 0. For the second one, z will be height of hte dent (7mm) plus layer height multiplied by two (in my case, 0.3 * 2). The third one respects the same principle so 15.2 and the forth one 22.8.&lt;/p&gt;
+&lt;p&gt;Results:&lt;/p&gt;
+&lt;p&gt;very good. speed could be better&lt;/p&gt;
+&lt;h2&gt;Printed&lt;/h2&gt;
+&lt;p&gt;Big dents: 16.4 with 0.1 interspace (16.2) 32 (1h 30) : testing speed at 180mm/s&lt;/p&gt;</content><category term="misc"></category><category term="pixelize wall-organizer"></category></entry><entry><title>Basic Plugin for Python Usage in VIM</title><link href="https://mesarpe.github.io/basic-plugin-for-python-usage-in-vim.html" rel="alternate"></link><published>2023-12-30T00:00:00+01:00</published><updated>2023-12-30T00:00:00+01:00</updated><author><name>cbernardini</name></author><id>tag:mesarpe.github.io,2023-12-30:/basic-plugin-for-python-usage-in-vim.html</id><summary type="html">&lt;ol&gt;
 &lt;li&gt;Install vim using your OS package manager.&lt;/li&gt;
 &lt;/ol&gt;
 &lt;h2&gt;Plugin Manager: Vundle&lt;/h2&gt;

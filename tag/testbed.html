@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <meta name="generator" content="Pelican" />
+        <title>cbernardini' blog - testbed</title>
+        <link rel="stylesheet" href="https://mesarpe.github.io/theme/css/main.css" />
+        <link href="https://mesarpe.github.io/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="cbernardini' blog Atom Feed" />
+</head>
+
+<body id="index" class="home">
+        <header id="banner" class="body">
+                <h1><a href="https://mesarpe.github.io/">cbernardini' blog</a></h1>
+                <nav><ul>
+                    <li><a href="https://mesarpe.github.io/category/misc.html">misc</a></li>
+                </ul></nav>
+        </header><!-- /#banner -->
+
+            <aside id="featured" class="body">
+                <article>
+                    <h1 class="entry-title"><a href="https://mesarpe.github.io/testbed-serving-an-image.html">Testbed: Serving an Image</a></h1>
+<footer class="post-info">
+        <abbr class="published" title="2024-02-15T00:00:00+01:00">
+                Published: jeu. 15 février 2024
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="https://mesarpe.github.io/author/cbernardini.html">cbernardini</a>
+        </address>
+<p>In <a href="https://mesarpe.github.io/category/misc.html">misc</a>.</p>
+<p>tags: <a href="https://mesarpe.github.io/tag/testbed.html">testbed</a> </p>
+</footer><!-- /.post-info --><p>The idea is to create a testbed that is generically enough to use with students. The first idea is to serve the images using a DHCP and TFTP</p>
+<h2>Elements</h2>
+<table>
+<thead>
+<tr>
+<th style="text-align: center;">Quantity</th>
+<th style="text-align: center;">Element</th>
+<th style="text-align: center;">Description, notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: center;">1</td>
+<td style="text-align: center;">Raspberry PI 4B</td>
+<td style="text-align: center;"></td>
+</tr>
+<tr>
+<td style="text-align: center;">1</td>
+<td style="text-align: center;">Serial Cable to USB (PL2303TA)</td>
+<td style="text-align: center;"></td>
+</tr>
+<tr>
+<td style="text-align: center;">1</td>
+<td style="text-align: center;">USB to Ethernet (UE-300)</td>
+<td style="text-align: center;"></td>
+</tr>
+</tbody>
+</table>
+<h2>1) Serial Access</h2>
+<p>Connection is as follows:</p>
+<div class="highlight"><pre><span></span><code>TX GPIO 14 =&gt; white cable
+RX GPIO 15 =&gt; green cable
+Ground =&gt; black cable
+No connection =&gt; 5v
+</code></pre></div>
+
+<p>There should be a PC connected to the serial to visualize what is going on with the board.</p>
+<div class="highlight"><pre><span></span><code><span class="o">$</span><span class="n">python</span><span class="w"> </span><span class="o">-</span><span class="n">m</span><span class="w"> </span><span class="n">pip</span><span class="w"> </span><span class="n">install</span><span class="w"> </span><span class="n">pyserial</span>
+<span class="o">$</span><span class="w"> </span><span class="c1"># list the ports</span>
+<span class="o">$</span><span class="n">python</span><span class="w"> </span><span class="o">-</span><span class="n">m</span><span class="w"> </span><span class="n">serial</span><span class="o">.</span><span class="n">tools</span><span class="o">.</span><span class="n">list_ports</span>
+<span class="o">/</span><span class="n">dev</span><span class="o">/</span><span class="n">ttyUSB0</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">Normally</span><span class="w"> </span><span class="n">this</span><span class="w"> </span><span class="k">is</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="n">port</span><span class="w"> </span><span class="n">being</span><span class="w"> </span><span class="n">used</span><span class="w"> </span><span class="n">when</span><span class="w"> </span><span class="n">connecting</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="n">cable</span>
+<span class="o">/</span><span class="n">dev</span><span class="o">/</span><span class="n">ttyS4</span>
+<span class="o">$</span><span class="w"> </span><span class="c1"># in normal mode our user has no access to the ports</span>
+<span class="o">$</span><span class="w"> </span><span class="n">sudo</span><span class="w"> </span><span class="n">usermod</span><span class="w"> </span><span class="o">-</span><span class="n">a</span><span class="w"> </span><span class="o">-</span><span class="n">G</span><span class="w"> </span><span class="n">dialout</span><span class="w"> </span><span class="n">LINUXUSER</span>
+<span class="o">$</span><span class="w"> </span><span class="c1"># reboot</span>
+<span class="o">$</span><span class="w"> </span><span class="n">reboot</span>
+<span class="o">$</span><span class="w"> </span><span class="n">python</span><span class="w"> </span><span class="o">-</span><span class="n">m</span><span class="w"> </span><span class="n">serial</span><span class="o">.</span><span class="n">tools</span><span class="o">.</span><span class="n">miniterm</span><span class="w"> </span><span class="o">/</span><span class="n">dev</span><span class="o">/</span><span class="n">ttyUSB0</span><span class="w"> </span><span class="mi">115200</span>
+</code></pre></div>
+
+<blockquote>
+<p>It is important to see that we can read but also write in the serial. Otherwise we won't be able to interact with U-Boot</p>
+</blockquote>
+<h2>2) Install the DHCP server</h2>
+<p>It is important now to connect the UE300 to the RPi4 using the Ethernet port of the RPi4 to a usb port of the PC. This interface will be configured with static ip addresses to use <code>192.168.3.254</code>.</p>
+<p>Once the address is fixed, we can start thinking in serving IP addresses from this host using a DHCP server.</p>
+<div class="highlight"><pre><span></span><code>sudo apt install isc-dhcp-server
+</code></pre></div>
+
+<p>Set the configuration for the DHCP server:</p>
+<div class="highlight"><pre><span></span><code><span class="k">default</span><span class="o">-</span><span class="nx">lease</span><span class="o">-</span><span class="nx">time</span><span class="w"> </span><span class="mi">600</span><span class="p">;</span>
+<span class="nx">max</span><span class="o">-</span><span class="nx">lease</span><span class="o">-</span><span class="nx">time</span><span class="w"> </span><span class="mi">700</span><span class="p">;</span>
+
+<span class="nx">log</span><span class="o">-</span><span class="nx">facility</span><span class="w"> </span><span class="nx">local7</span><span class="p">;</span>
+
+<span class="nx">subnet</span><span class="w"> </span><span class="m m-Double">192.168.3.0</span><span class="w"> </span><span class="nx">netmask</span><span class="w"> </span><span class="m m-Double">255.255.255.0</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nx">range</span><span class="w"> </span><span class="m m-Double">192.168.3.150</span><span class="w"> </span><span class="m m-Double">192.168.3.200</span><span class="p">;</span>
+<span class="w">    </span><span class="nx">option</span><span class="w"> </span><span class="nx">routers</span><span class="w"> </span><span class="m m-Double">192.168.3.154</span><span class="p">;</span>
+
+<span class="w">    </span><span class="nx">host</span><span class="w"> </span><span class="nx">MY_HOST</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="nx">hardware</span><span class="w"> </span><span class="nx">ethernet</span><span class="w"> </span><span class="nx">AA</span><span class="p">:</span><span class="nx">BB</span><span class="p">:</span><span class="nx">CC</span><span class="p">:</span><span class="nx">DD</span><span class="p">:</span><span class="nx">EE</span><span class="p">:</span><span class="nx">FF</span><span class="p">;</span><span class="w"> </span><span class="err">#</span><span class="w"> </span><span class="nx">this</span><span class="w"> </span><span class="k">is</span><span class="w"> </span><span class="nx">the</span><span class="w"> </span><span class="nx">ethernet</span><span class="w"> </span><span class="nx">address</span><span class="w"> </span><span class="nx">of</span><span class="w"> </span><span class="nx">the</span><span class="w"> </span><span class="nx">device</span>
+<span class="w">        </span><span class="nx">fixed</span><span class="o">-</span><span class="nx">address</span><span class="w"> </span><span class="m m-Double">192.168.3.153</span><span class="p">;</span>
+<span class="w">        </span><span class="nx">filename</span><span class="w"> </span><span class="s">&quot;MY_IMAGE&quot;</span><span class="p">;</span><span class="w"> </span><span class="err">#</span><span class="w"> </span><span class="nx">this</span><span class="w"> </span><span class="k">is</span><span class="w"> </span><span class="nx">the</span><span class="w"> </span><span class="nx">filename</span><span class="w"> </span><span class="nx">that</span><span class="w"> </span><span class="nx">this</span><span class="w"> </span><span class="nx">host</span><span class="w"> </span><span class="nx">will</span><span class="w"> </span><span class="nx">try</span><span class="w"> </span><span class="nx">to</span><span class="w"> </span><span class="nx">retrieve</span><span class="w"> </span><span class="nx">from</span><span class="w"> </span><span class="nx">the</span><span class="w"> </span><span class="nx">TFTP</span><span class="w"> </span><span class="nx">server</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div>
+
+<p>Edit the interfaces that will use the DHCP server (/etc/default/isc-dhcp-server):</p>
+<div class="highlight"><pre><span></span><code>INTERFACESv4=&quot;MYUE300INTERFACE&quot;
+</code></pre></div>
+
+<div class="highlight"><pre><span></span><code>sudo systemctl restart isc-dhcp-server.service
+</code></pre></div>
+
+<p>To write the logs into a file, edit the file <code>/etc/rsyslog.d/50-default.conf</code>:</p>
+<div class="highlight"><pre><span></span><code><span class="n">local7</span><span class="o">.*</span><span class="w"> </span><span class="o">/</span><span class="k">var</span><span class="o">/</span><span class="nb">log</span><span class="o">/</span><span class="n">dhcpd</span><span class="o">.</span><span class="n">log</span>
+</code></pre></div>
+
+<p>After do not forget to restart</p>
+<blockquote>
+<p>To see the logs, we can use <code>journalctl -u isc-dhcp-server</code></p>
+</blockquote>
+<h2>3) Install the TFTP server</h2>
+<p>Create a folder <code>tftpserver</code> in some location of your like, let us say /home/cbernardini/tftpfiles.</p>
+<div class="highlight"><pre><span></span><code><span class="n">sudo</span><span class="w"> </span><span class="n">python</span><span class="w"> </span><span class="o">-</span><span class="n">m</span><span class="w"> </span><span class="n">pip</span><span class="w"> </span><span class="n">install</span><span class="w"> </span><span class="n">tftpy</span>
+<span class="n">sudo</span><span class="w"> </span><span class="o">~/</span><span class="p">.</span><span class="k">local</span><span class="o">/</span><span class="n">bin</span><span class="o">/</span><span class="n">tftpy_server</span><span class="p">.</span><span class="n">py</span><span class="w"> </span><span class="o">-</span><span class="n">i</span><span class="w"> </span><span class="o">[</span><span class="n">SERVER_IP</span><span class="o">]</span><span class="w"> </span><span class="o">-</span><span class="n">p</span><span class="w"> </span><span class="mi">69</span><span class="w"> </span><span class="o">-</span><span class="n">r</span><span class="w"> </span><span class="o">/</span><span class="n">home</span><span class="o">/</span><span class="n">cbernardini</span><span class="o">/</span><span class="n">tftpfiles</span>
+</code></pre></div>
+
+<blockquote>
+<p>we can easily add verbosity and logs flags to see what is going on at the standard output (see connections, download of files, etc etc).</p>
+</blockquote>
+<h2>4) Changing U-Boot to boot from the TFTP server</h2>
+<div class="highlight"><pre><span></span><code><span class="n">setenv</span><span class="w"> </span><span class="n">autoload</span><span class="w"> </span><span class="k">no</span>
+<span class="n">dhcp</span><span class="w"> </span><span class="err">#</span><span class="w"> </span><span class="k">after</span><span class="w"> </span><span class="n">see</span><span class="w"> </span><span class="n">that</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="n">dhcp</span><span class="w"> </span><span class="n">lease</span><span class="w"> </span><span class="n">worked</span>
+<span class="n">setenv</span><span class="w"> </span><span class="n">serverip</span><span class="w"> </span><span class="o">[</span><span class="n">SERVER_Ip</span><span class="o">]</span>
+<span class="n">tftpboot</span><span class="w"> </span><span class="mh">0x10000000</span><span class="w"> </span><span class="n">MYIMAGE</span>
+<span class="n">bootm</span><span class="w"> </span><span class="mh">0x10000000</span>
+</code></pre></div>
+
+<blockquote>
+<p>In the step tftpboot, we can see that the image is being downloaded (cross verify with the TFTP server that there are some logs) and then the image is simply used to boot.</p>
+</blockquote>                </article>
+            </aside><!-- /#featured -->
+        <section id="extras" class="body">
+                <div class="blogroll">
+                        <h2>links</h2>
+                        <ul>
+                            <li><a href="https://getpelican.com/">Pelican</a></li>
+                            <li><a href="https://www.python.org/">Python.org</a></li>
+                            <li><a href="https://palletsprojects.com/p/jinja/">Jinja2</a></li>
+                            <li><a href="#">You can modify those links in your config file</a></li>
+                        </ul>
+                </div><!-- /.blogroll -->
+                <div class="social">
+                        <h2>social</h2>
+                        <ul>
+                            <li><a href="https://mesarpe.github.io/feeds/all.atom.xml" type="application/atom+xml" rel="alternate">atom feed</a></li>
+
+                            <li><a href="#">You can add links in your config file</a></li>
+                            <li><a href="#">Another social link</a></li>
+                        </ul>
+                </div><!-- /.social -->
+        </section><!-- /#extras -->
+
+        <footer id="contentinfo" class="body">
+                <address id="about" class="vcard body">
+                Proudly powered by <a rel="nofollow" href="https://getpelican.com/">Pelican</a>, which takes great advantage of <a rel="nofollow" href="https://www.python.org/">Python</a>.
+                </address><!-- /#about -->
+
+                <p>The theme is by <a rel="nofollow" href="https://www.smashingmagazine.com/2009/08/designing-a-html-5-layout-from-scratch/">Smashing Magazine</a>, thanks!</p>
+        </footer><!-- /#contentinfo -->
+
+</body>
+</html>

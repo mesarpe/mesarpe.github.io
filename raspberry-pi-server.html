@@ -4,68 +4,78 @@
         <meta charset="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <meta name="generator" content="Pelican" />
-        <title>Calentito, an esp32-based temperature sensor</title>
+        <title>Raspberry Pi Server</title>
         <link rel="stylesheet" href="https://mesarpe.github.io/theme/css/main.css" />
         <link href="https://mesarpe.github.io/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="cbernardini' blog Atom Feed" />
-        <meta name="description" content="Calentito is a simple project to create an ESP32-wroom-32 based temperature sensor. The sensor will report over bluetooth the temperature using a..." />
+        <meta name="description" content="In our days, having a server at home is almost a must. Very useful to keep our backups, giving access to particular applications or controlling a..." />
 </head>
 
 <body id="index" class="home">
         <header id="banner" class="body">
                 <h1><a href="https://mesarpe.github.io/">cbernardini' blog</a></h1>
                 <nav><ul>
-                    <li><a href="https://mesarpe.github.io/category/misc.html">misc</a></li>
+                    <li class="active"><a href="https://mesarpe.github.io/category/misc.html">misc</a></li>
                 </ul></nav>
         </header><!-- /#banner -->
 <section id="content" class="body">
   <article>
     <header>
       <h1 class="entry-title">
-        <a href="https://mesarpe.github.io/calentito-an-esp32-based-temperature-sensor.html" rel="bookmark"
-           title="Permalink to Calentito, an esp32-based temperature sensor">Calentito, an esp32-based temperature sensor</a></h1>
+        <a href="https://mesarpe.github.io/raspberry-pi-server.html" rel="bookmark"
+           title="Permalink to Raspberry Pi Server">Raspberry Pi Server</a></h1>
     </header>
 
     <div class="entry-content">
 <footer class="post-info">
-        <abbr class="published" title="2023-12-30T00:00:00+01:00">
-                Published: sam. 30 décembre 2023
+        <abbr class="published" title="2024-03-25T00:00:00+01:00">
+                Published: lun. 25 mars 2024
         </abbr>
 
         <address class="vcard author">
                 By                         <a class="url fn" href="https://mesarpe.github.io/author/cbernardini.html">cbernardini</a>
         </address>
-<p>In <a href="https://mesarpe.github.io/category/electronics-embeeded-bluetooth.html">electronics, embeeded, bluetooth</a>.</p>
-<p>tags: <a href="https://mesarpe.github.io/tag/esp32.html">esp32</a> <a href="https://mesarpe.github.io/tag/bluetooth.html">bluetooth</a> </p>
-</footer><!-- /.post-info -->      <p>Calentito is a simple project to create an ESP32-wroom-32 based temperature sensor. The sensor will report over bluetooth the temperature using a DHT11 sensor.</p>
-<h2>Components</h2>
-<table>
-<thead>
-<tr>
-<th style="text-align: center;">Quantity</th>
-<th style="text-align: center;">Component</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align: center;">1</td>
-<td style="text-align: center;">DHT11</td>
-</tr>
-<tr>
-<td style="text-align: center;">1</td>
-<td style="text-align: center;">esp32-wroom-32</td>
-</tr>
-<tr>
-<td style="text-align: center;">1</td>
-<td style="text-align: center;">resistor 10 KOhm</td>
-</tr>
-</tbody>
-</table>
-<h2>Connection</h2>
-<p><img alt="Connection Diagram for ESP32 and DHT11" src="https://mesarpe.github.io/images/connect_dht11_esp32.png"></p>
-<h2>Basic Bluetooth connection</h2>
-<h2>Creating personalized attributes to report the temperature</h2>
-<h2>Deep sleep</h2>
-<h2>Measuring the energy consumption</h2>
+<p>In <a href="https://mesarpe.github.io/category/misc.html">misc</a>.</p>
+
+</footer><!-- /.post-info -->      <p>In our days, having a server at home is almost a must. Very useful to keep our backups, giving access to particular applications or controlling a domotics server. All this is possible with a raspberry pi. In addition, the power consumption is very low being around ~10 euros per year.</p>
+<h2>Requirements</h2>
+<ul>
+<li>Raspberry Pi 4 B</li>
+<li>SD card (32GB)</li>
+<li>Ubuntu PC (you can still do it in Windows or Mac, but the instructions given are for Ubuntu 22.04 LTS)</li>
+</ul>
+<h2>Install Ubuntu Server</h2>
+<ol>
+<li>Create the SD Card image:</li>
+</ol>
+<div class="highlight"><pre><span></span><code>sudo snap install rpi-imager
+rpi-imager
+</code></pre></div>
+
+<ol>
+<li>
+<p>In the rpi-imager, select the options according to your raspberry pi.</p>
+</li>
+<li>
+<p>Device: Raspberry Pi 4</p>
+</li>
+<li>Operating System: General Purpose Os / Ubuntu / Ubuntu 22.04 LTS</li>
+<li>
+<p>Storage: SDCard</p>
+</li>
+<li>
+<p>When you click on start, there are interesting options about customization like setting the keyboard layout, username and password, enabling ssh. In my case, I set all of them.</p>
+</li>
+</ol>
+<p>After waiting for the image to be written, you can remove rpi-imager</p>
+<div class="highlight"><pre><span></span><code>sudo snap remove rpi-imager
+</code></pre></div>
+
+<p>If you have done everything right and rpi-manager did its job, your Ubuntu machine is ready to boot.</p>
+<h2>Services intended to run on the Raspberry Pi</h2>
+<ul>
+<li><a href="https://mesarpe.github.io/home-assistant.html">Home Assistant</a></li>
+<li><a href="https://mesarpe.github.io/octoprint-a-webservice-to-manage-the-printer.html">Octoprint</a></li>
+</ul>
     </div><!-- /.entry-content -->
 
   </article>

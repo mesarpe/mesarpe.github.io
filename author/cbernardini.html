@@ -19,10 +19,10 @@
 
             <aside id="featured" class="body">
                 <article>
-                    <h1 class="entry-title"><a href="https://mesarpe.github.io/creating-my-own-legos.html">Creating my own LEGOs</a></h1>
+                    <h1 class="entry-title"><a href="https://mesarpe.github.io/octoprint-a-webservice-to-manage-the-printer.html">Octoprint: a webservice to manage the printer.</a></h1>
 <footer class="post-info">
-        <abbr class="published" title="2024-08-01T00:00:00+02:00">
-                Published: jeu. 01 août 2024
+        <abbr class="published" title="2024-03-25T00:00:00+01:00">
+                Published: lun. 25 mars 2024
         </abbr>
 
         <address class="vcard author">
@@ -30,84 +30,204 @@
         </address>
 <p>In <a href="https://mesarpe.github.io/category/misc.html">misc</a>.</p>
 <p>tags: <a href="https://mesarpe.github.io/tag/3dprint.html">3dprint</a> </p>
-</footer><!-- /.post-info --><p>Have you ever wonder if it is possible to refresh the feeling of playing with LEGOs once you are near your forties? Indeed, it is possible but after ten years of engineering the idea was not only to play with them, but to create my own. This is the story of me creating my owns bricks while learning 3D printing and getting to know the MakerSpace56 at Vannes.</p>
-<p><img alt="My own bricks" src="https://mesarpe.github.io/bricks.jpg"></p>
-<p>Let us start by setting up my intent:</p>
+</footer><!-- /.post-info --><p>Octoprint is a tool to remotely manage your 3d printer. Just avoid going to the run copying your 3d prints into the SD card and all the stuff, simply open a web interface and manage remotely the 3d printer.</p>
+<h1>My installation</h1>
+<p>I will be running the application from a virtual environment with its own user.</p>
+<p>Let us start by creating the new user:</p>
+<div class="highlight"><pre><span></span><code>sudo useradd -rm octoprint
+# add the user octoprint to be able to open the serial port
+sudo usermod -a -G dialout octoprint
+</code></pre></div>
+
+<p>Now, the installation of octoprint in the pi</p>
+<div class="highlight"><pre><span></span><code>sudo mkdir /srv/octoprint
+sudo chown octoprint:octoprint /srv/octoprint
+sudo -u octoprint -H -s
+python3.11 -m venv .
+</code></pre></div>
+
+<p>We are almost there, let us activate and install the python packages:</p>
+<div class="highlight"><pre><span></span><code>source bin/activate
+# version: 1.9.3
+pip install octoprint
+</code></pre></div>
+
+<p>We can start playing with it by simply calling</p>
+<div class="highlight"><pre><span></span><code>#<span class="w"> </span><span class="nv">just</span><span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="nv">execution</span>
+<span class="nv">octoprint</span><span class="w"> </span><span class="nv">serve</span>
+</code></pre></div>
+
+<p>Now, it is time to follow the wizard:</p>
 <ol>
-<li>
-<p>Let us create programatically my own bricks in such a way that they are stackable.</p>
-</li>
-<li>
-<p>My programmatic bricks shall be composable, which is the same to say that I expect to create a 2x1 piece using a 1x1 piece.</p>
-</li>
-<li>
-<p>I really love houses in the french Brittany, they are part of the cozy feeling of living in Bretagne. So, it would be nice to create a small set of parts capable of creating the smallest possible house.</p>
-</li>
+<li>Next</li>
+<li>Restore backup? No</li>
+<li>Access Control</li>
 </ol>
-<p><img alt="The resulting house" src="https://mesarpe.github.io/bricks_house_model2.jpg"></p>
-<h2>Pieces</h2>
-<table>
-<thead>
-<tr>
-<th>Piece</th>
-<th>Url to Code or STL</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>1x1 brick</td>
-<td><a href="url">SOURCE</a></td>
-</tr>
-<tr>
-<td>XxY brick</td>
-<td><a href="url">SOURCE</a></td>
-</tr>
-<tr>
-<td>Windows and doors</td>
-<td><a href="url">SOURCE</a></td>
-</tr>
-<tr>
-<td>Tiles</td>
-<td><a href="url">SOURCE</a></td>
-</tr>
-<tr>
-<td>Joist</td>
-<td><a href="url">SOURCE</a></td>
-</tr>
-</tbody>
-</table>
-<h3>Creating a small house</h3>
-<table>
-<thead>
-<tr>
-<th>Pictures</th>
-<th></th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><img alt="Model #2" src="https://mesarpe.github.io/bricks_house_model2.jpg"></td>
-<td><img alt="Model #2" src="https://mesarpe.github.io/bricks_house_model2b.jpg"></td>
-</tr>
-<tr>
-<td><img alt="Model #1" src="https://mesarpe.github.io/bricks_house_model1.jpg"></td>
-<td><img alt="Joist" src="https://mesarpe.github.io/bricks_joist.jpg"></td>
-</tr>
-</tbody>
-</table>
-<h3>Lessons learned</h3>
-<ul>
-<li>It is really important to choose the right profile for printing. Using default UltiMake Cura 5.6 Standard profile, the tiles are problematic to connect to the joists. I had to destroy the pieces and glue them together. For the rest of the pieces, I uses the dynamic profile (which has a better quality) and the results were better.</li>
-<li>Some of the pieces were printed with a LONGER LK 1 and Creality Ender Pro 3 v3 SE.</li>
-</ul>
-<h3>Software-Simulator</h3>
-<h2>Brick v2</h2>
-<h2>Brick v3</h2>                </article>
+<blockquote>
+<p>I notice that when I send a print it worked, but when I sent a stop it did not.</p>
+</blockquote>
+<h1>Activating octoprint as a service from startup</h1>
+<p>In order to have octoprint running from start</p>
+<div class="highlight"><pre><span></span><code>sudo nano /etc/systemd/system/octoprint.service
+</code></pre></div>
+
+<p>The content of the file is the following:</p>
+<div class="highlight"><pre><span></span><code><span class="k">[Unit]</span>
+<span class="na">Description</span><span class="o">=</span><span class="s">Octoprint</span>
+<span class="na">After</span><span class="o">=</span><span class="s">homeassistant.service</span>
+
+<span class="k">[Service]</span>
+<span class="na">Type</span><span class="o">=</span><span class="s">simple</span>
+<span class="na">User</span><span class="o">=</span><span class="s">octoprint</span>
+<span class="na">WorkingDirectory</span><span class="o">=</span><span class="s">/srv/octoprint</span>
+<span class="na">ExecStart</span><span class="o">=</span><span class="s">/srv/octoprint/bin/octoprint serve</span>
+<span class="na">RestartForceExitStatus</span><span class="o">=</span><span class="s">100</span>
+<span class="na">Restart</span><span class="o">=</span><span class="s">on-failure</span>
+<span class="na">RestartSec</span><span class="o">=</span><span class="s">5s</span>
+
+<span class="k">[Install]</span>
+<span class="na">WantedBy</span><span class="o">=</span><span class="s">multi-user.target</span>
+</code></pre></div>
+
+<p>Now, simply execute the following commands:</p>
+<div class="highlight"><pre><span></span><code>sudo systemctl restart octoprint.service
+systemctl status octoprint.service
+sudo systemctl enable octoprint.service
+</code></pre></div>
+
+<h1>Home-Assistant integration</h1>
+<p>Now, it is time to open Home Assistant and configure the integration of Octoprint. To that end:</p>
+<ol>
+<li>Open the web interface for home assistant</li>
+<li>Go to settings / Services</li>
+<li>Search for octoprint and provide its url.</li>
+<li>Open octoprint and enable the integration that appears as a popup in the web interface.</li>
+<li>You are ready to go.</li>
+</ol>
+<blockquote>
+<p>We are probably missing updating the firmware of the printer but i am not ready for this.</p>
+</blockquote>                </article>
             </aside><!-- /#featured -->
                 <section id="content" class="body">
                     <h1>Other articles</h1>
                     <hr />
                     <ol id="posts-list" class="hfeed">
+
+            <li><article class="hentry">
+                <header>
+                    <h1><a href="https://mesarpe.github.io/raspberry-pi-server.html" rel="bookmark"
+                           title="Permalink to Raspberry Pi Server">Raspberry Pi Server</a></h1>
+                </header>
+
+                <div class="entry-content">
+<footer class="post-info">
+        <abbr class="published" title="2024-03-25T00:00:00+01:00">
+                Published: lun. 25 mars 2024
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="https://mesarpe.github.io/author/cbernardini.html">cbernardini</a>
+        </address>
+<p>In <a href="https://mesarpe.github.io/category/misc.html">misc</a>.</p>
+
+</footer><!-- /.post-info -->                <p>In our days, having a server at home is almost a must. Very useful to keep our backups, giving access to particular applications or controlling a domotics server. All this is possible with a raspberry pi. In addition, the power consumption is very low being around ~10 euros per year …</p>
+                <a class="readmore" href="https://mesarpe.github.io/raspberry-pi-server.html">read more</a>
+                </div><!-- /.entry-content -->
+            </article></li>
+
+            <li><article class="hentry">
+                <header>
+                    <h1><a href="https://mesarpe.github.io/testbed-serving-an-image.html" rel="bookmark"
+                           title="Permalink to Testbed: Serving an Image">Testbed: Serving an Image</a></h1>
+                </header>
+
+                <div class="entry-content">
+<footer class="post-info">
+        <abbr class="published" title="2024-02-15T00:00:00+01:00">
+                Published: jeu. 15 février 2024
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="https://mesarpe.github.io/author/cbernardini.html">cbernardini</a>
+        </address>
+<p>In <a href="https://mesarpe.github.io/category/misc.html">misc</a>.</p>
+<p>tags: <a href="https://mesarpe.github.io/tag/testbed.html">testbed</a> </p>
+</footer><!-- /.post-info -->                <p>The idea is to create a testbed that is generically enough to use with students. The first idea is to serve the images using a DHCP and TFTP</p>
+<h2>Elements</h2>
+<table>
+<thead>
+<tr>
+<th style="text-align: center;">Quantity</th>
+<th style="text-align: center;">Element</th>
+<th style="text-align: center;">Description, notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: center;">1</td>
+<td style="text-align: center;">Raspberry PI 4B</td>
+<td style="text-align: center;"></td>
+</tr>
+<tr>
+<td style="text-align: center;">1</td>
+<td style="text-align: center;">Serial Cable to USB (PL2303TA)</td>
+<td style="text-align: center;"></td>
+</tr>
+<tr>
+<td style="text-align: center;">1</td>
+<td style="text-align: center;">USB to Ethernet (UE-300)</td>
+<td style="text-align: center;"></td>
+</tr>
+</tbody>
+</table>
+<h2>1) Serial …</h2>
+                <a class="readmore" href="https://mesarpe.github.io/testbed-serving-an-image.html">read more</a>
+                </div><!-- /.entry-content -->
+            </article></li>
+
+            <li><article class="hentry">
+                <header>
+                    <h1><a href="https://mesarpe.github.io/creating-my-own-legos.html" rel="bookmark"
+                           title="Permalink to Creating my own LEGOs">Creating my own LEGOs</a></h1>
+                </header>
+
+                <div class="entry-content">
+<footer class="post-info">
+        <abbr class="published" title="2024-01-08T00:00:00+01:00">
+                Published: lun. 08 janvier 2024
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="https://mesarpe.github.io/author/cbernardini.html">cbernardini</a>
+        </address>
+<p>In <a href="https://mesarpe.github.io/category/misc.html">misc</a>.</p>
+<p>tags: <a href="https://mesarpe.github.io/tag/3dprint.html">3dprint</a> </p>
+</footer><!-- /.post-info -->                <p>Have you ever wonder if it is possible to refresh the feeling of playing with LEGOs once you are near your forties? Indeed, it is possible but after ten years of engineering the idea was not only to play with them, but to create my own. This is the story …</p>
+                <a class="readmore" href="https://mesarpe.github.io/creating-my-own-legos.html">read more</a>
+                </div><!-- /.entry-content -->
+            </article></li>
+
+            <li><article class="hentry">
+                <header>
+                    <h1><a href="https://mesarpe.github.io/a-wall-organizer-for-my-garage.html" rel="bookmark"
+                           title="Permalink to A Wall Organizer for my Garage">A Wall Organizer for my Garage</a></h1>
+                </header>
+
+                <div class="entry-content">
+<footer class="post-info">
+        <abbr class="published" title="2023-12-30T00:00:00+01:00">
+                Published: sam. 30 décembre 2023
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="https://mesarpe.github.io/author/cbernardini.html">cbernardini</a>
+        </address>
+<p>In <a href="https://mesarpe.github.io/category/misc.html">misc</a>.</p>
+<p>tags: <a href="https://mesarpe.github.io/tag/pixelize-wall-organizer.html">pixelize wall-organizer</a> </p>
+</footer><!-- /.post-info -->                <p>My Garage is quite messy. I have already built a table to work, however I didn't manage to make it beautiful. The idea of this project is to beautify the table with a wall organizer. The wall organizer would be made with honeycombs and I expect to manage to hang …</p>
+                <a class="readmore" href="https://mesarpe.github.io/a-wall-organizer-for-my-garage.html">read more</a>
+                </div><!-- /.entry-content -->
+            </article></li>
 
             <li><article class="hentry">
                 <header>

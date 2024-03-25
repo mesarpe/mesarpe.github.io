@@ -46,6 +46,9 @@
     ffmpeg liblapack3 liblapack-dev libatlas-base-dev
 </code></pre></div>
 
+<blockquote>
+<p>Note: libtiff6 does not exist, using libtiff5</p>
+</blockquote>
 <p>Add a user and it folder:</p>
 <div class="highlight"><pre><span></span><code>sudo useradd -rm homeassistant
 sudo mkdir /srv/homeassistant
@@ -59,13 +62,50 @@ python3.11 -m venv .
 source bin/activate
 </code></pre></div>
 
+<blockquote>
+<p>Requirements: sudo apt install python3.11 python3.11-venv</p>
+</blockquote>
 <div class="highlight"><pre><span></span><code>python3 -m pip install wheel
 # we cannot use the version coming with Ubuntu is too old
 pip3 install homeassistant==2023.11.1 
 </code></pre></div>
 
+<blockquote>
+<p>I needed to install numpy manually using pip. Otherwise the program hass fails.</p>
+</blockquote>
 <p>Launch the new server:</p>
 <div class="highlight"><pre><span></span><code>hass
+</code></pre></div>
+
+<h2>Enable after boot</h2>
+<p>In order to have the homeassistant enabled after reboot, we require a new script.</p>
+<div class="highlight"><pre><span></span><code>sudo nano /etc/systemd/system/homeassistant.service
+</code></pre></div>
+
+<p>With the following content: </p>
+<div class="highlight"><pre><span></span><code><span class="k">[Unit]</span>
+<span class="na">Description</span><span class="o">=</span><span class="s">Home Assistant</span>
+<span class="na">After</span><span class="o">=</span><span class="s">network-online.target</span>
+
+<span class="k">[Service]</span>
+<span class="na">Type</span><span class="o">=</span><span class="s">simple</span>
+<span class="na">User</span><span class="o">=</span><span class="s">homeassistant</span>
+<span class="na">WorkingDirectory</span><span class="o">=</span><span class="s">/home/homeassistant/.homeassistant</span>
+<span class="na">ExecStart</span><span class="o">=</span><span class="s">/srv/homeassistant/bin/hass -c &quot;/home/homeassistant/.homeassistant&quot;</span>
+<span class="na">RestartForceExitStatus</span><span class="o">=</span><span class="s">100</span>
+<span class="na">Restart</span><span class="o">=</span><span class="s">on-failure</span>
+<span class="na">RestartSec</span><span class="o">=</span><span class="s">5s</span>
+
+<span class="k">[Install]</span>
+<span class="na">WantedBy</span><span class="o">=</span><span class="s">multi-user.target</span>
+</code></pre></div>
+
+<p>Then we simply start the program and enable it at restart:</p>
+<div class="highlight"><pre><span></span><code>sudo systemctl start homeassistant.service
+# verify it started correctly
+sudo systemctl status homeassistant.service
+# Enable it at bootstrap
+sudo systemctl enable homeassistant.service
 </code></pre></div>
 
 <h2>Create my OWN sensor</h2>
