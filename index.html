@@ -13,13 +13,42 @@
         <header id="banner" class="body">
                 <h1><a href="https://mesarpe.github.io/">cbernardini' blog</a></h1>
                 <nav><ul>
+                    <li><a href="https://mesarpe.github.io/category/electronics-embeeded-bluetooth.html">electronics, embeeded, bluetooth</a></li>
                     <li><a href="https://mesarpe.github.io/category/misc.html">misc</a></li>
                 </ul></nav>
         </header><!-- /#banner -->
 
             <aside id="featured" class="body">
                 <article>
-                    <h1 class="entry-title"><a href="https://mesarpe.github.io/octoprint-a-webservice-to-manage-the-printer.html">Octoprint: a webservice to manage the printer.</a></h1>
+                    <h1 class="entry-title"><a href="https://mesarpe.github.io/backup-an-sdcard-using-compression.html">Backup an SDcard using compression</a></h1>
+<footer class="post-info">
+        <abbr class="published" title="2024-04-22T00:00:00+02:00">
+                Published: lun. 22 avril 2024
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="https://mesarpe.github.io/author/cbernardini.html">cbernardini</a>
+        </address>
+<p>In <a href="https://mesarpe.github.io/category/misc.html">misc</a>.</p>
+<p>tags: <a href="https://mesarpe.github.io/tag/sdcard-linux.html">sdcard linux</a> </p>
+</footer><!-- /.post-info --><p>In order to backup the SDCard using compression do as follows:</p>
+<div class="highlight"><pre><span></span><code><span class="nv">sudo</span><span class="w"> </span><span class="nv">dd</span><span class="w"> </span><span class="nv">bs</span><span class="o">=</span><span class="mi">4</span><span class="nv">M</span><span class="w"> </span><span class="k">if</span><span class="o">=/</span><span class="nv">dev</span><span class="o">/</span><span class="nv">sda</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="nv">gzip</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="nv">raspberrypi4</span><span class="o">-</span><span class="nv">ubuntu</span>`<span class="nv">date</span><span class="w"> </span><span class="o">+%</span><span class="nv">d</span><span class="o">%</span><span class="nv">m</span><span class="o">%</span><span class="nv">y</span>`.<span class="nv">gz</span>
+</code></pre></div>
+
+<p>If the SDCard is big, it will take a while. Be patient!</p>                </article>
+            </aside><!-- /#featured -->
+                <section id="content" class="body">
+                    <h1>Other articles</h1>
+                    <hr />
+                    <ol id="posts-list" class="hfeed">
+
+            <li><article class="hentry">
+                <header>
+                    <h1><a href="https://mesarpe.github.io/octoprint-a-webservice-to-manage-the-printer.html" rel="bookmark"
+                           title="Permalink to Octoprint: a webservice to manage the printer.">Octoprint: a webservice to manage the printer.</a></h1>
+                </header>
+
+                <div class="entry-content">
 <footer class="post-info">
         <abbr class="published" title="2024-03-25T00:00:00+01:00">
                 Published: lun. 25 mars 2024
@@ -30,88 +59,12 @@
         </address>
 <p>In <a href="https://mesarpe.github.io/category/misc.html">misc</a>.</p>
 <p>tags: <a href="https://mesarpe.github.io/tag/3dprint.html">3dprint</a> </p>
-</footer><!-- /.post-info --><p>Octoprint is a tool to remotely manage your 3d printer. Just avoid going to the run copying your 3d prints into the SD card and all the stuff, simply open a web interface and manage remotely the 3d printer.</p>
+</footer><!-- /.post-info -->                <p>Octoprint is a tool to remotely manage your 3d printer. Just avoid going to the run copying your 3d prints into the SD card and all the stuff, simply open a web interface and manage remotely the 3d printer.</p>
 <h1>My installation</h1>
-<p>I will be running the application from a virtual environment with its own user.</p>
-<p>Let us start by creating the new user:</p>
-<div class="highlight"><pre><span></span><code>sudo useradd -rm octoprint
-# add the user octoprint to be able to open the serial port
-sudo usermod -a -G dialout octoprint
-</code></pre></div>
-
-<p>Now, the installation of octoprint in the pi</p>
-<div class="highlight"><pre><span></span><code>sudo mkdir /srv/octoprint
-sudo chown octoprint:octoprint /srv/octoprint
-sudo -u octoprint -H -s
-python3.11 -m venv .
-</code></pre></div>
-
-<p>We are almost there, let us activate and install the python packages:</p>
-<div class="highlight"><pre><span></span><code>source bin/activate
-# version: 1.9.3
-pip install octoprint
-</code></pre></div>
-
-<p>We can start playing with it by simply calling</p>
-<div class="highlight"><pre><span></span><code>#<span class="w"> </span><span class="nv">just</span><span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="nv">execution</span>
-<span class="nv">octoprint</span><span class="w"> </span><span class="nv">serve</span>
-</code></pre></div>
-
-<p>Now, it is time to follow the wizard:</p>
-<ol>
-<li>Next</li>
-<li>Restore backup? No</li>
-<li>Access Control</li>
-</ol>
-<blockquote>
-<p>I notice that when I send a print it worked, but when I sent a stop it did not.</p>
-</blockquote>
-<h1>Activating octoprint as a service from startup</h1>
-<p>In order to have octoprint running from start</p>
-<div class="highlight"><pre><span></span><code>sudo nano /etc/systemd/system/octoprint.service
-</code></pre></div>
-
-<p>The content of the file is the following:</p>
-<div class="highlight"><pre><span></span><code><span class="k">[Unit]</span>
-<span class="na">Description</span><span class="o">=</span><span class="s">Octoprint</span>
-<span class="na">After</span><span class="o">=</span><span class="s">homeassistant.service</span>
-
-<span class="k">[Service]</span>
-<span class="na">Type</span><span class="o">=</span><span class="s">simple</span>
-<span class="na">User</span><span class="o">=</span><span class="s">octoprint</span>
-<span class="na">WorkingDirectory</span><span class="o">=</span><span class="s">/srv/octoprint</span>
-<span class="na">ExecStart</span><span class="o">=</span><span class="s">/srv/octoprint/bin/octoprint serve</span>
-<span class="na">RestartForceExitStatus</span><span class="o">=</span><span class="s">100</span>
-<span class="na">Restart</span><span class="o">=</span><span class="s">on-failure</span>
-<span class="na">RestartSec</span><span class="o">=</span><span class="s">5s</span>
-
-<span class="k">[Install]</span>
-<span class="na">WantedBy</span><span class="o">=</span><span class="s">multi-user.target</span>
-</code></pre></div>
-
-<p>Now, simply execute the following commands:</p>
-<div class="highlight"><pre><span></span><code>sudo systemctl restart octoprint.service
-systemctl status octoprint.service
-sudo systemctl enable octoprint.service
-</code></pre></div>
-
-<h1>Home-Assistant integration</h1>
-<p>Now, it is time to open Home Assistant and configure the integration of Octoprint. To that end:</p>
-<ol>
-<li>Open the web interface for home assistant</li>
-<li>Go to settings / Services</li>
-<li>Search for octoprint and provide its url.</li>
-<li>Open octoprint and enable the integration that appears as a popup in the web interface.</li>
-<li>You are ready to go.</li>
-</ol>
-<blockquote>
-<p>We are probably missing updating the firmware of the printer but i am not ready for this.</p>
-</blockquote>                </article>
-            </aside><!-- /#featured -->
-                <section id="content" class="body">
-                    <h1>Other articles</h1>
-                    <hr />
-                    <ol id="posts-list" class="hfeed">
+<p>I will be running the application from a virtual …</p>
+                <a class="readmore" href="https://mesarpe.github.io/octoprint-a-webservice-to-manage-the-printer.html">read more</a>
+                </div><!-- /.entry-content -->
+            </article></li>
 
             <li><article class="hentry">
                 <header>
@@ -264,6 +217,29 @@ sudo systemctl enable octoprint.service
 <span class="s">&quot; set the runtime path to include Vundle and initialize</span>
 <span class="s">set …</span></code></pre></div>
                 <a class="readmore" href="https://mesarpe.github.io/basic-plugin-for-python-usage-in-vim.html">read more</a>
+                </div><!-- /.entry-content -->
+            </article></li>
+
+            <li><article class="hentry">
+                <header>
+                    <h1><a href="https://mesarpe.github.io/calentito-an-esp32-based-temperature-sensor.html" rel="bookmark"
+                           title="Permalink to Calentito, an esp32-based temperature sensor">Calentito, an esp32-based temperature sensor</a></h1>
+                </header>
+
+                <div class="entry-content">
+<footer class="post-info">
+        <abbr class="published" title="2023-12-30T00:00:00+01:00">
+                Published: sam. 30 décembre 2023
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="https://mesarpe.github.io/author/cbernardini.html">cbernardini</a>
+        </address>
+<p>In <a href="https://mesarpe.github.io/category/electronics-embeeded-bluetooth.html">electronics, embeeded, bluetooth</a>.</p>
+<p>tags: <a href="https://mesarpe.github.io/tag/esp32.html">esp32</a> <a href="https://mesarpe.github.io/tag/bluetooth.html">bluetooth</a> </p>
+</footer><!-- /.post-info -->                <p>Calentito is a simple project to create an ESP32-wroom-32 based temperature sensor. The sensor will report over bluetooth the temperature using a DHT11 sensor.</p>
+<p>The main goal of this project is at showing that we can make a usable product at all the levels: (1) Hardware-level connect; (2) Software-level; (3 …</p>
+                <a class="readmore" href="https://mesarpe.github.io/calentito-an-esp32-based-temperature-sensor.html">read more</a>
                 </div><!-- /.entry-content -->
             </article></li>
 

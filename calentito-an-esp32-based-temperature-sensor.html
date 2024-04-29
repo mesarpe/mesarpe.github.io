@@ -14,6 +14,7 @@
         <header id="banner" class="body">
                 <h1><a href="https://mesarpe.github.io/">cbernardini' blog</a></h1>
                 <nav><ul>
+                    <li class="active"><a href="https://mesarpe.github.io/category/electronics-embeeded-bluetooth.html">electronics, embeeded, bluetooth</a></li>
                     <li><a href="https://mesarpe.github.io/category/misc.html">misc</a></li>
                 </ul></nav>
         </header><!-- /#banner -->
@@ -37,7 +38,9 @@
 <p>In <a href="https://mesarpe.github.io/category/electronics-embeeded-bluetooth.html">electronics, embeeded, bluetooth</a>.</p>
 <p>tags: <a href="https://mesarpe.github.io/tag/esp32.html">esp32</a> <a href="https://mesarpe.github.io/tag/bluetooth.html">bluetooth</a> </p>
 </footer><!-- /.post-info -->      <p>Calentito is a simple project to create an ESP32-wroom-32 based temperature sensor. The sensor will report over bluetooth the temperature using a DHT11 sensor.</p>
-<h2>Components</h2>
+<p>The main goal of this project is at showing that we can make a usable product at all the levels: (1) Hardware-level connect; (2) Software-level; (3) Build a case.</p>
+<h2>Hardware: part #1 connecting the Temperature Sensor to the Dev Board</h2>
+<h4>Components</h4>
 <table>
 <thead>
 <tr>
@@ -60,12 +63,46 @@
 </tr>
 </tbody>
 </table>
-<h2>Connection</h2>
+<h4>Connection</h4>
 <p><img alt="Connection Diagram for ESP32 and DHT11" src="https://mesarpe.github.io/images/connect_dht11_esp32.png"></p>
-<h2>Basic Bluetooth connection</h2>
-<h2>Creating personalized attributes to report the temperature</h2>
-<h2>Deep sleep</h2>
-<h2>Measuring the energy consumption</h2>
+<p>Basic Bluetooth connection.</p>
+<p>Creating personalized attributes to report the temperature.</p>
+<h2>Software: Part #1, the tooling</h2>
+<p>As we have decided to use an ESP32, the easiest manner to flash software on it is by using the <a href="https://github.com/espressif/esp-idf">ESP-IDF</a> toolsuite. It includes a compiler, serial port reader, debugger and more.</p>
+<p>Please follow first the instructions to install it with its Visual Code instruction.</p>
+<p>To use it, simply use the following commands:</p>
+<div class="highlight"><pre><span></span><code><span class="n">cd</span><span class="w"> </span><span class="o">~/</span><span class="n">Programs</span>
+<span class="n">cd</span><span class="w"> </span><span class="n">esp</span><span class="o">-</span><span class="n">idf</span><span class="o">-</span><span class="n">v5</span><span class="o">.</span><span class="mf">1.1</span>
+<span class="n">source</span><span class="w"> </span><span class="k">export</span><span class="o">.</span><span class="n">sh</span>
+</code></pre></div>
+
+<p>Now, let us focus in our projects:</p>
+<div class="highlight"><pre><span></span><code>cd 04_bluetooth
+code .
+</code></pre></div>
+
+<p>With control shift P, we can compile and monitor the code.</p>
+<blockquote>
+<p>If we use a USB cable of bad quality, we might suffer issues to use the serial port. Sudden disconnection or failing to connect.</p>
+</blockquote>
+<h2>Hardware: Part #2 Using with batteries</h2>
+<p>First try, using a LiFePo 18650 battery of 3.2v and 1800mAh.</p>
+<p>The connection is very easy from the ground of the board to the ground of the device and the 3.3v directly to the battery.</p>
+<p>This type of battery (LiFePo) has a discharge rate that is almost constant -- at difference of other batteries --, for instance, the battery is capable of providing ~3.2v for a very long time.</p>
+<p>Connections:</p>
+<ul>
+<li>GROUND ESp32 -&gt; negative of te battery</li>
+<li>3.3v ESP32 -&gt; positive of the battery</li>
+</ul>
+<h2>Case: Part #4</h2>
+<p>The last part of the project consists in creating an enclosure for the project.</p>
+<ul>
+<li><img alt="Case picture #1" src="https://mesarpe.github.io/images/calentito-case-01.png"></li>
+<li><img alt="Case picture #2" src="https://mesarpe.github.io/images/calentito-case-02.png"></li>
+</ul>
+<p>The case and the soldering went straigtforward. Everything worked for 5 hours.</p>
+<p>We have proved our point, it is possible to build a product to measure temperature by just using my bare-hands and knowledge.</p>
+<p>Very happy about it!</p>
     </div><!-- /.entry-content -->
 
   </article>
